@@ -1,7 +1,7 @@
 # muze
 Online music therapist
 
-##Requirements
+## Requirements
 algorithmia
 Flask==0.12.2
 hsaudiotag==1.1.1
@@ -14,7 +14,7 @@ six==1.11.0
 urllib3==1.22
 Werkzeug==0.14.1
 
-##How to run
+## How to run
 Edit line 17 in algorithmia.py to input your api key
 
 On terminal type `python app.py`
