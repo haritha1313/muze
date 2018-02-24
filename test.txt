@@ -1,0 +1,1802 @@
+(lp0
+S'(Mama) He Treats Your Daughter Mean - Brown'
+p1
+aS'Night in Tunisia - Blakey'
+p2
+aS'Along Came Jones - Coasters'
+p3
+aS'Back in Black - AC/DC'
+p4
+aS'Bad Reputation - Jett'
+p5
+aS'Boogie Woogie Stomp - Ammons'
+p6
+aS'Burn Rubber (Why You Wanna Hurt Me) - Gap Band [1]'
+p7
+aS'Cigarettes and Alcohol - Oasis'
+p8
+aS'Country Grammar (Hot...) - Nelly'
+p9
+aS'Fairytale of New York - Pogues/MacColl'
+p10
+aS'Gimme a Pigfoot (And a Bottle of Beer) - Smith'
+p11
+aS'Give It Away - Red Hot Chili Peppers'
+p12
+aS'God! Show Me Magic - Super Furry Animals'
+p13
+aS'High School - MC Five'
+p14
+aS'I Know You Got Soul - Byrd'
+p15
+aS'I Put a Spell on You - Hawkins'
+p16
+aS'Insane in the Brain - Cypress Hill'
+p17
+aS'Just Like Me - Revere'
+p18
+aS"Let's Spend the Night Together - Rolling Stones"
+p19
+aS'Lucille - Little Richard'
+p20
+aS'Lust for Life - Pop'
+p21
+aS'Neat Neat Neat - Damned'
+p22
+aS"One Monkey Don't Stop No Show - Big Maybelle"
+p23
+aS'Saturday Night Fish Fry - Jordan'
+p24
+aS'Shake -  Rattle and Roll'
+p25
+aS'Sing -  Sing'
+p26
+aS'Talk Dirty to Me - Poison'
+p27
+aS"Joint Is Jumpin' - Waller"
+p28
+aS'Walking the Dog - Thomas'
+p29
+aS'Wang Dang Doodle - Taylor'
+p30
+aS'Wild Cat Blues - Bechet'
+p31
+aS'Achy Breaky Heart - Cyrus'
+p32
+aS'All Right Now - Free [1]'
+p33
+aS'Bad - Jackson'
+p34
+aS"Big Pimpin' - Jay Z/UGK"
+p35
+aS'Big Time Sensuality - Bjork'
+p36
+aS'Blue Suede Shoes - Presley'
+p37
+aS'Brass in Pocket - Pretenders [1]'
+p38
+aS"Bye Bye Bye - 'N Sync"
+p39
+aS'Champagne Supernova - Oasis'
+p40
+aS'Crazy on You - Heart [1]'
+p41
+aS'Dirty Deeds Done Dirt Cheap - AC - DC'
+p42
+aS'Do Anything You Wanna Do - Eddie & The Hot Rods'
+p43
+aS'Express Yourself - Madonna'
+p44
+aS"Feel Like Makin' Love - Bad Company [1]"
+p45
+aS'Fujiyama Mama - Jackson'
+p46
+aS'Gangster of Love - Watson'
+p47
+aS'Goldfinger - Bassey'
+p48
+aS'Heartbreaker - Led Zeppelin'
+p49
+aS'Hey Grandma - Moby Grape'
+p50
+aS'Hound Dog - Thornton'
+p51
+aS'I Am the Resurrection - Stone Roses'
+p52
+aS'I Hate You - Monks [2]'
+p53
+aS"I'm a King Bee - Harpo"
+p54
+aS"I'm a Man - Spencer Davis Group"
+p55
+aS'Mannish Boy - Waters'
+p56
+aS'Pour Some Sugar on Me - Def Leppard'
+p57
+aS'Pump It Up - Elvis Costello & the Attractions'
+p58
+aS'Rebel Yell - Idol'
+p59
+aS'Sister Havana - Urge Overkill'
+p60
+aS"Sometimes Good Guys Don't Wear White - Standells"
+p61
+aS'Super Bad - Brown'
+p62
+aS"Survivor - Destiny's Child"
+p63
+aS'Ten Feet Tall and Bulletproof - Tritt'
+p64
+aS'Greatest Lover in the World - Diddley'
+p65
+aS'Walk This Way - Aerosmith'
+p66
+aS'What Have You Done for Me Lately - Jackson'
+p67
+aS"Who's That Girl? - Eve [1]"
+p68
+aS'(You Make Me Feel Like) A Natural Woman - Franklin'
+p69
+aS'63rd Street Theme - Griffin'
+p70
+aS'Change Is Gonna Come - Cooke'
+p71
+aS'Design for Life - Manic Street Preachers'
+p72
+aS'Another Place -  Another Time'
+p73
+aS'Anyday - Derek & the Dominos'
+p74
+aS'Bamboleo - Gipsy Kings'
+p75
+aS"Beck's Bolero - Beck"
+p76
+aS'Born Under a Bad Sign - King'
+p77
+aS"Coal Miner's Daughter - Lynn"
+p78
+aS'Cry Cry Cry - Bland'
+p79
+aFnan
+aS"Don't Stop 'Til You Get Enough - Jackson"
+p80
+aS'Gel\xc3\xa9ia Geral - Mercury'
+p81
+aS'Golden Gate Gospel Train - Golden Gate Quartet'
+p82
+aS"Good Rockin' Tonight - Presley"
+p83
+aS'Here I Am (Come and Take Me) - Green'
+p84
+aS"Hold on -  I'm Comin'"
+p85
+aS'Home in Your Heart - Burke'
+p86
+aS'I Have a Dream - King'
+p87
+aS'I Will Follow - U Two'
+p88
+aS"I'm Ready - Waters"
+p89
+aS'Into the Mystic - Morrison'
+p90
+aS'London Calling - Clash'
+p91
+aS'Naima - Coltrane'
+p92
+aS'Nothing Compares 2 U - OConnor'
+p93
+aS'Piece of My Heart - Joplin'
+p94
+aS'Rip It Up - Little Richard'
+p95
+aS'Tell It Like It Is - Neville'
+p96
+aS'Dark End of the Street - Carr'
+p97
+aS'Think - Franklin'
+p98
+aS'Try a Little Tenderness - Redding'
+p99
+aS'Twist and Shout - Isley Brothers'
+p100
+aS'Amor - Gipsy Kings'
+p101
+aS'Waiting for the Great Leap Forwards - Bragg'
+p102
+aS'Westbound #9 - Flaming Ember'
+p103
+aS"What'd I Say - Charles"
+p104
+aS"What's Going On - Gaye"
+p105
+aS'When the Saints Go Marching In - Bechet'
+p106
+aS'With a Little Help from My Friends - Cocker'
+p107
+aS"(What's So Funny 'Bout) Peace -  Love and Understanding?"
+p108
+aS'American Girl - Tom Petty & the Heartbreakers'
+p109
+aS'Born in the U.S.A. - Springsteen'
+p110
+aS"Can't Get Enough - Bad Company [1]"
+p111
+aS'Do You Wanna Touch Me? (Oh Yeah!) - Glitter'
+p112
+aS"Don't Bring Me Down - Electric Light Orchestra"
+p113
+aS"Don't Stop Believin' - Journey"
+p114
+aS'Fight the Power -  Pt. 1'
+p115
+aS'Fortunate Son - Creedence Clearwater Revival'
+p116
+aS'Garageland - Clash'
+p117
+aS'Hotel Yorba - White Stripes'
+p118
+aS'I Fought the Law - Bobby Fuller Four'
+p119
+aS'I Want You to Want Me - Cheap Trick'
+p120
+aS'I Will Dare - Replacements'
+p121
+aS'In a Big Country - Big Country'
+p122
+aS'Knock on Wood - Floyd'
+p123
+aS'Land of 1000 Dances - Pickett'
+p124
+aS'Love Removal Machine - Cult'
+p125
+aS'Making Time - Creation'
+p126
+aS'Mickey - Basil'
+p127
+aS'More Than a Feeling - Boston'
+p128
+aS'New Day Rising - Husker Du'
+p129
+aS'One Way - Levellers'
+p130
+aS'Pride (In the Name of Love) - U Two'
+p131
+aS'Rescue Me - Bass'
+p132
+aS'Rock & Roll -  Pt. 2'
+p133
+aS"Rockin' Down the Highway - Doobie Brothers"
+p134
+aS"Say It Loud (I'm Black and I'm Proud) - Brown"
+p135
+aS'Boys Are Back in Town - Thin Lizzy'
+p136
+aS'We Will Rock You - Queen'
+p137
+aS"We're an American Band - Grand Funk Railroad"
+p138
+aS'Welcome to the Terrordome - Public Enemy'
+p139
+aS"You Ain't Seen Nothing Yet - Bachman Turner Overdrive"
+p140
+aS'30 Days in the Hole - Humble Pie'
+p141
+aS'All Kindsa Girls - Real Kids'
+p142
+aS'Bad Reputation - Jett'
+p143
+aS'Bastards of Young - Replacements'
+p144
+aS"Blues' Theme - Allan"
+p145
+aS'Cherry Bomb - Runaways [1]'
+p146
+aS'Cowboy - Kid Rock'
+p147
+aS'Detroit Breakdown - Geils'
+p148
+aS'Fingernails - Ely'
+p149
+aS"Get 'Em from the Peanut Man (The New Hot Nuts) - Johnson"
+p150
+aS'Get off of My Cloud - Rolling Stones'
+p151
+aS'Get Out of Denver - Bob Seger & The Silver Bullet Band'
+p152
+aS"Good Rockin' Tonight - Brown"
+p153
+aS"Good Rockin' Tonight - Harris"
+p154
+aS'Gospel 2000 - Make Up'
+p155
+aS'Great Balls of Fire - Lewis'
+p156
+aS'Had Me a Real Good Time - Faces/Stewart'
+p157
+aS'I Just Want to Make Love to You - Waters'
+p158
+aS'Jenny Take a Ride! - Mitch Ryder & the Detroit Wheels'
+p159
+aS'Misirlou - Dick Dale & the Del - Tones'
+p160
+aS'Party Machine - Hoodoo Gurus'
+p161
+aS'Rumble - Wray'
+p162
+aS"Smokin' in the Boy's Room - Brownsville Station"
+p163
+aS'Step On - Happy Mondays'
+p164
+aS"Takin' Care of Business - Bachman Turner Overdrive"
+p165
+aS'Boys Are Back in Town - Thin Lizzy'
+p166
+aS"Train Kept A Rollin' - Burnette"
+p167
+aS"Touch Me I'm Sick - Mudhoney"
+p168
+aS'White Lightning - Jones'
+p169
+aS'Roll with It - Winwood'
+p170
+aS'Up -  Up and Away'
+p171
+aS"Did You Ever Have to Make up Your Mind? - Lovin' Spoonful"
+p172
+aS'Skinny Jim - Cochran'
+p173
+aS'Boy from New York City - Manhattan Transfer'
+p174
+aS'Back at the Chicken Shack - Smith'
+p175
+aS'Hey! Baby - Channel'
+p176
+aS'Give Me the Simple Life - Christy'
+p177
+aS'I Left My Wallet in el Segundo - Tribe Called Quest'
+p178
+aS'Show Me the Way - Frampton'
+p179
+aS'New San Antonio Rose - Wills'
+p180
+aS'Sunshine Superman - Donovan [1]'
+p181
+aS"Surfin' U.S.A. - Beach Boys"
+p182
+aS'Joy Spring - Brown'
+p183
+aS'Ac - Cent - Tchu - Ate the Positive - Andrews Sisters/Crosby'
+p184
+aS'Sweet Little Sixteen - Berry'
+p185
+aS'Salt Peanuts - Gillespie'
+p186
+aS'Come On - A My House - Clooney'
+p187
+aS'King of the Road - Miller'
+p188
+aS'Your Smiling Face - Taylor'
+p189
+aS'Silly Love Songs - McCartney'
+p190
+aS'Give Him a Great Big Kiss - Shangri - Las'
+p191
+aS'Creeque Alley - Mamas & Papas'
+p192
+aS'Blueberry Hill - Domino'
+p193
+aS'Ventura Highway - America [1]'
+p194
+aS'Sally Was a Good Old Girl - Owens'
+p195
+aS'Wake Me Up Before You Go - Go - Wham!'
+p196
+aS'Red Rubber Ball - Cyrkle'
+p197
+aS'Mistadobalina - Del Tha Funkee Homosapien'
+p198
+aS'Ruby Baby - Dion'
+p199
+aS'Soul Man - Sam & Dave'
+p200
+aS"Mamas Don't Let Your Babies Grow up to Be Cowboys - Nelson"
+p201
+aS"It's Only a Paper Moon - Cole"
+p202
+aS'Backfield in Motion - Mel & Tim'
+p203
+aS'Thank You for Being a Friend - Gold'
+p204
+aS'C Is the Heavenly Option - Heavenly [1]'
+p205
+aFnan
+aS'Crickets Sing for Anamaria - Valle'
+p206
+aS'Happy Together - Turtles'
+p207
+aS'Magic Number - De La Soul'
+p208
+aS'Wake Up Little Susie - Everly Brothers'
+p209
+aS'Escapade - Jackson'
+p210
+aS'Give Him the Ooh - La - La - Dearie'
+p211
+aS'Heart of Rock & Roll - Huey Lewis & the News'
+p212
+aS'I Can Hear Music - Beach Boys'
+p213
+aS'Friday on My Mind - Easybeats'
+p214
+aS'Hello -  Dolly!'
+p215
+aS'Forever Your Girl - Abdul'
+p216
+aS"We Got the Beat - Go Go's [1]"
+p217
+aS'I Should Be So Lucky - Minogue'
+p218
+aS'Rise and Shine - Cardigans/Lindg\xc3\xa5rd'
+p219
+aS'A - Tisket -  A - Tasket'
+p220
+aS'Happy Birthday - Altered Images'
+p221
+aS'Rain -  the Park & Other Things'
+p222
+aS'Kites Are Fun - Free Design'
+p223
+aS'Babalu - Arnaz'
+p224
+aS"Head over Heels - Go Go's [1]"
+p225
+aS'Cherry -  Cherry'
+p226
+aS'Come On - A My House - Clooney'
+p227
+aS"Ain't That a Kick in the Head - Martin"
+p228
+aS'Baby Baby - Grant'
+p229
+aS'Candy Girl - New Edition [US]'
+p230
+aS'Here You Come Again - Parton'
+p231
+aS'Very Stylish Fille - Dimitri from Paris'
+p232
+aS"Don't Turn Around - Ace Of Base"
+p233
+aS'Everybody Loves the Sunshine - Ayers'
+p234
+aS'Baby Pop - Gall'
+p235
+aS'Minnie the Moocher - Calloway'
+p236
+aS'See See Rider - Baker'
+p237
+aS'Oh -  Boy!'
+p238
+aS'Soul Man - Blues Brothers'
+p239
+aS'Palisades Park - Cannon'
+p240
+aS"Let's Go -  Let's Go"
+p241
+aS'No Sugar Tonight/New Mother Nature - Guess Who [1]'
+p242
+aS'I Fought the Law - Fuller'
+p243
+aS'Dancing Queen - Abba'
+p244
+aS"Let's Go Crazy - Prince & The Revolution"
+p245
+aS'Holiday - Madonna'
+p246
+aS"Searchin' - Coasters"
+p247
+aS"Summer in the City - Lovin' Spoonful"
+p248
+aS'Good Times - Chic'
+p249
+aS'Oops! ... I Did It Again - Spears'
+p250
+aS'Rock & Roll Music - Berry'
+p251
+aS'Alright - Supergrass'
+p252
+aS'Save It for Later - English Beat'
+p253
+aS'Bust a Move - Young Mc'
+p254
+aS'Beach Baby - Burrows'
+p255
+aS"Good Lovin' - Young Rascals"
+p256
+aS'Express Yourself - Charles Wright & The Watts 103rd Street Rhythm Band'
+p257
+aS'Since I Left You - Avalanches [2]'
+p258
+aS'Let the Good Times Roll - Jordan'
+p259
+aS'Margaritaville - Buffett'
+p260
+aS'Flat Foot Floogie - Slim & Slam'
+p261
+aS"Double Shot (Of My Baby's Love) - Swingin' Medallions"
+p262
+aS'I Got Rhythm - Quintet Of The Hot Club Of France'
+p263
+aS"Somethin' Else - Cochran"
+p264
+aS'Fat Man - Domino'
+p265
+aS'Hang Onto Yourself - Bowie'
+p266
+aS'Sea Cruise - Ford'
+p267
+aS"Finger Poppin' Time - Hank Ballard & the Midnighters"
+p268
+aS'Why Baby Why - Jones'
+p269
+aS'Rebel Rouser - Eddy'
+p270
+aS"I'm Movin' On - Snow"
+p271
+aS'Have You Seen My Baby? - Newman'
+p272
+aS'Claudette - Everly Brothers'
+p273
+aS"Hate to Lose Your Lovin' - Little Feat"
+p274
+aS"Truckin' - Grateful Dead"
+p275
+aS'Get Rhythm - Cash'
+p276
+aS'Ride Your Pony - Dorsey'
+p277
+aS'Kansas City - Harrison'
+p278
+aS'Lazy Days - Flying Burrito Brothers'
+p279
+aS'Break My Mind - Flying Burrito Brothers'
+p280
+aS'Desdemona - Bolan'
+p281
+aS'Hey Porter - Cash'
+p282
+aS'No Particular Place to Go - Berry'
+p283
+aS'Down on the Corner - Creedence Clearwater Revival'
+p284
+aS'Working in the Coal Mine - Dorsey'
+p285
+aS'Dust My Broom - James'
+p286
+aS'Happy Hour - Housemartins'
+p287
+aS"She's About a Mover - Sir Douglas Quintet"
+p288
+aS'Come on Eileen - Rowland'
+p289
+aS"Choo Choo Ch'Boogie - Jordan"
+p290
+aS"Opening: I Can't Turn You Loose - Blues Brothers"
+p291
+aS"Comin' Home - Delaney & Bonnie & Friends"
+p292
+aS'Viva Las Vegas - Presley'
+p293
+aS'Going Up the Country - Canned Heat'
+p294
+aS'Every Day I Have the Blues - King'
+p295
+aS"C'mon Everybody - Cochran"
+p296
+aS"Now We're Getting Somewhere - Crowded House"
+p297
+aS"I'm Sensitive - Jewel [1]"
+p298
+aS'To Sir with Love - Lulu'
+p299
+aS'Love Takes Time - Orleans'
+p300
+aS'Gentle on My Mind - Campbell'
+p301
+aS"Don't Sleep in the Subway - Clark"
+p302
+aS'Nobody - Sylvia [Country]'
+p303
+aS'Beechwood 4 - 5789 - Marvelettes'
+p304
+aS'Kiss Me - Sixpence None the Richer'
+p305
+aS'Lights Are Changing - Lord'
+p306
+aS'Daydream Believer - Monkees'
+p307
+aS'Baby Love - Ross'
+p308
+aS'O - o - h Child - Five Stairsteps'
+p309
+aS"Como un Duende - Dandy's"
+p310
+aS"We've Only Just Begun - Carpenters"
+p311
+aS'Oh Girl - Chi - Lites'
+p312
+aS'Shake Your Love - Gibson'
+p313
+aS'Sunshine on My Shoulders - Denver'
+p314
+aS'Solid - Ashford & Simpson'
+p315
+aS'Downtown - Clark'
+p316
+aS'Hey Little Girl - Clark'
+p317
+aS'Sixteen Candles - Crests'
+p318
+aS'Palomine - Bettie Serveert'
+p319
+aS"There's a Moon Out Tonight - Capris [1]"
+p320
+aS'She Keeps the Home Fires Burning - Milsap'
+p321
+aS'Alfie - Black'
+p322
+aS'Chapel of Love - Dixie Cups'
+p323
+aS'My Favorite Things - Andrews'
+p324
+aS'Forever Baby - Hatfield'
+p325
+aS'Back for Good - Take That'
+p326
+aS'You Were Meant for Me - Klicher'
+p327
+aS'In the Mood - Miller'
+p328
+aS'Music! Music! Music! - Brewer'
+p329
+aS'Kind of a Drag - Buckinghams'
+p330
+aS'Feed the Tree - Belly'
+p331
+aS"Could It Be I'm Falling in Love - Spinners"
+p332
+aS'Whiter Shade of Pale - Procul Harum'
+p333
+aS'Just a Little - Beau Brummels'
+p334
+aS'Fuzzy - Grant Lee Buffalo'
+p335
+aS'Goodbye Yellow Brick Road - John'
+p336
+aS'Smoke Gets in Your Eyes - Southern'
+p337
+aS'Waiting for the Sun - Jayhawks [1]'
+p338
+aS'Turn! Turn! Turn! (To Everything There Is a Season) - Byrds'
+p339
+aS'Sundown - Lightfoot'
+p340
+aS'Harvest Moon - Young'
+p341
+aS'Old Man - Young'
+p342
+aS'It Was a Very Good Year - Sinatra'
+p343
+aS'Beechwood Park - Zombies'
+p344
+aS'Time of the Season - Zombies'
+p345
+aS'Return of the Grievous Angel - Parsons'
+p346
+aS'In My Hour of Darkness - Parsons'
+p347
+aS'Boulder to Birmingham - Harris'
+p348
+aS'Leave Me Alone - Chappaquiddick Skyline'
+p349
+aS'Here - Tindersticks'
+p350
+aS'Love Songs on the Radio - Mojave Three'
+p351
+aS'Crystal Lake - Grandaddy'
+p352
+aS'Down Colorful Hill - Red House Painters'
+p353
+aS'Bring on the Dancing Horses - Echo & the Bunnymen'
+p354
+aS'Little Hands - Spence'
+p355
+aS'Pink Moon - Drake'
+p356
+aFnan
+aS'Sunflower - Weller'
+p357
+aS'Hickory Wind - Byrds'
+p358
+aS'Autumn Sweater - Yo La Tengo'
+p359
+aS"Can't Find the Time - Orpheus [1]"
+p360
+aS'So Long -  Marianne'
+p361
+aS'In a Ditch - Scud Mountain Boys'
+p362
+aS'Leave Them All Behind - Ride'
+p363
+aS'Miss Misery - Smith'
+p364
+aS'Overcome by Happiness - Pernice Brothers'
+p365
+aS'Time in a Bottle - Croce'
+p366
+aS'Alone Again Or - Love'
+p367
+aS'Ladies and Gentlemen We Are Floating in Space - Spiritualized'
+p368
+aS'Fox in the Snow - Belle & Sebastian'
+p369
+aS"Baby I Can't Please You - Phillips"
+p370
+aS'Bowling Green - Case'
+p371
+aS'Grace - Buckley'
+p372
+aS'These Important Years - Husker Du'
+p373
+aS'Angi - Graham'
+p374
+aS'New York State of Mind - Joel'
+p375
+aS'Closer to Free - Bodeans'
+p376
+aS'Always on My Mind - Nelson'
+p377
+aS'Best Thing - Ivy'
+p378
+aS'Barnaby -  Hardly Working'
+p379
+aS'Daniel - John'
+p380
+aS'500 Miles Away from Home - Bare'
+p381
+aS'Both Sides -  Now'
+p382
+aS'Voices Carry - Til Tuesday'
+p383
+aS'Before the Next Teardrop Falls - Fender'
+p384
+aS'Changes - Bowie'
+p385
+aS'Breather X.O.X.O. - Unrest [1]'
+p386
+aS'Stolen Car - Orton'
+p387
+aS"(There's) Always Something There to Remind Me - Shaw"
+p388
+aS'Who Knows Where the Time Goes? - Fairport Convention'
+p389
+aS'Baby Blue - Badfinger'
+p390
+aS"Everybody's Stalking - Badly Drawn Boy"
+p391
+aS'American Gothic - Ackles'
+p392
+aS'Sunflower - Low [1]'
+p393
+aS"Fallin' - Keys"
+p394
+aS'Anna (Go to Him) - Alexander'
+p395
+aS'Fine and Mellow - Holiday'
+p396
+aS'I Am a Rock - Simon & Garfunkel'
+p397
+aS'Amelia - Mitchell'
+p398
+aS"Walkin' After Midnight - Cline"
+p399
+aS'I Fall to Pieces - Cline'
+p400
+aS'Runaway - Shannon'
+p401
+aS'Black Coffee - Lee'
+p402
+aS'Always Late (With Your Kisses) - Frizzell'
+p403
+aS'Bizarre Love Triangle - New Order [UK]'
+p404
+aS"You've Been Flirting Again - Bjork"
+p405
+aS'Over the Ocean - Low [1]'
+p406
+aS'Blood and Roses - Smithereens'
+p407
+aS'Man in the Box - Alice In Chains'
+p408
+aS'Stormy Monday Blues - Bland'
+p409
+aS"Delia's Gone - Cash"
+p410
+aS'Mogwai Fear Satan - Mogwai'
+p411
+aS"In a Silent Way/It's About That Time: In a Silent Way/It's About ... - Davis"
+p412
+aS"Don't Let Me Be Misunderstood - Animals"
+p413
+aS'Sour Times - Portishead'
+p414
+aS'Shot in the Arm - Wilco'
+p415
+aS'Black Metallic - Catherine Wheel'
+p416
+aS'I Still Miss Someone - Cash'
+p417
+aS'Natural Blues - Moby'
+p418
+aS'Bathysphere - Smog'
+p419
+aS'Unfinished Sympathy - Massive Attack'
+p420
+aS'Misty Roses - Hardin'
+p421
+aS'I See a Darkness - Bonnie Prince Billy'
+p422
+aS'Overcome - Tricky [1]'
+p423
+aS'Criminal - Apple'
+p424
+aS'Cuts You Up - Murphy'
+p425
+aS'My Own Prison - Creed [1]'
+p426
+aS'Working Class Hero - Lennon'
+p427
+aS'Everything Zen - Bush [2]'
+p428
+aS'Karmacoma - Massive Attack'
+p429
+aS'Bleed American - Jimmy Eat World'
+p430
+aS"Heaven Knows I'm Miserable Now - Smiths"
+p431
+aS'Karma Police - Radiohead'
+p432
+aS'Everybody Knows - Cohen'
+p433
+aS'Lightning Crashes - Live [1]'
+p434
+aS'Killing Moon - Echo & The Bunnymen'
+p435
+aS'Ship Song - Nick Cave & The Bad Seeds'
+p436
+aS'I Am the Cosmos - Bell'
+p437
+aS'Bell Bottom Blues - Derek & the Dominos'
+p438
+aS'I Wanna Be Adored - Stone Roses'
+p439
+aFnan
+aS'High and Dry - Radiohead'
+p440
+aS'Blue Monday - New Order [UK]'
+p441
+aS'Mr. Tambourine Man - Dylan'
+p442
+aS'Every Breath You Take - Police'
+p443
+aS'Chapter 8 -  Seashore and Horizon - Cornelius [2]'
+p444
+aS'Doctor My Eyes - Browne'
+p445
+aS'God Give Me Strength - Costello'
+p446
+aS'Bridge Is Over - Boogie Down Productions'
+p447
+aS'Parchman Farm - Allison'
+p448
+aS'Ever Since the World Ended - Allison'
+p449
+aS'Everyday I Write the Book - Elvis Costello & the Attractions'
+p450
+aS"Eli's Coming - Nyro"
+p451
+aS'Bachelor Kisses - Go - Betweens'
+p452
+aFnan
+aS"I Ain't Marching Anymore - Ochs"
+p453
+aS'To the End - Blur'
+p454
+aS'Life During Wartime - Talking Heads'
+p455
+aS'Accidents Will Happen - Elvis Costello & the Attractions'
+p456
+aS'Deacon Blues - Steely Dan'
+p457
+aS'Dolphins - Neil'
+p458
+aS"Everybody's Talkin' - Neil"
+p459
+aS"This Woman's Work - Bush"
+p460
+aS'Weight - Band [1]'
+p461
+aS'Amsterdam - Brel'
+p462
+aS'1941 - Nilsson'
+p463
+aS'Everyday Is Like Sunday - Morrissey'
+p464
+aS'Come Sundown - Kristofferson'
+p465
+aS'Dangling Conversation - Simon & Garfunkel'
+p466
+aS'Raised on Robbery - Mitchell'
+p467
+aS'True Faith - New Order [UK]'
+p468
+aS'Expecting to Fly - Buffalo Springfield'
+p469
+aS'Boy With the Thorn in His Side - Smiths'
+p470
+aS'1952 Vincent Black Lightning - Thompson'
+p471
+aS'Heroin - Velvet Underground & Nico'
+p472
+aS'Downtown Train - Waits'
+p473
+aS'Accidentally Like a Martyr - Zevon'
+p474
+aS'Dallas - Flatlanders'
+p475
+aS'Seeing Other People - Belle & Sebastian'
+p476
+aS'Black Steel in the Hour of Chaos - Public Enemy'
+p477
+aS"Where It's At - Beck"
+p478
+aS"Can't Find My Way Home - Blind Faith"
+p479
+aS'Last Goodbye - Buckley'
+p480
+aS"Don't Dream It's Over - Crowded House"
+p481
+aS'Ballad of el Goodo - Big Star'
+p482
+aS'Thirteen - Big Star'
+p483
+aS'If - Bread [1]'
+p484
+aS'Crying - Orbison'
+p485
+aS'Long Black Veil - Frizzell'
+p486
+aS'Walk Away Renee - Left Banke'
+p487
+aS"What's He Doing in My World - Arnold"
+p488
+aS'Sweet Lady Mary - Faces'
+p489
+aS'Hot Burrito No. 1 - Flying Burrito Brothers'
+p490
+aS'Amanda - Jennings'
+p491
+aS"Darling Be Home Soon - Lovin' Spoonful"
+p492
+aS'My Favorite Things - Coltrane'
+p493
+aS'My Elusive Dreams - Houston'
+p494
+aS'Sweet Lorraine - Cole'
+p495
+aS'Sound of Silence - Simon & Garfunkel'
+p496
+aS'Homeward Bound - Simon & Garfunkel'
+p497
+aS'My Funny Valentine - Davis'
+p498
+aS'Make It Easy on Yourself - Walker Brothers'
+p499
+aS'Walk on By - Warwick'
+p500
+aS'Killing Me Softly with His Song - Flack'
+p501
+aS'Blue Eyes Crying in the Rain - Nelson'
+p502
+aS"Hello It's Me - Rundgren"
+p503
+aS'20 Million Things - George'
+p504
+aS'Can We Still Be Friends? - Rundgren'
+p505
+aS'Sweet Dreams - Cline'
+p506
+aS'God Bless the Child - Holiday'
+p507
+aS'How Can You Mend a Broken Heart? - Bee Gees'
+p508
+aS'Landslide - Fleetwood Mac'
+p509
+aS'Mandolin Wind - Stewart'
+p510
+aS"California Dreamin' - Mamas & the Papas"
+p511
+aS'Handbags & Gladrags - Stewart'
+p512
+aS'Gasoline Alley - Stewart'
+p513
+aS'One for My Baby (And One More for the Road) - Sinatra'
+p514
+aS"I Don't Mind at All - Bourgeois Tagg/Coast String Quartet"
+p515
+aS'Summer -  Highland Falls'
+p516
+aS'Rainy Days and Mondays - Carpenters'
+p517
+aS'Goodbye Pork Pie Hat - Mingus'
+p518
+aS'Good Year for the Roses - Jones'
+p519
+aS'Cousin Mary - Coltrane'
+p520
+aS'Our Town - DeMent'
+p521
+aS'God Only Knows - Beach Boys'
+p522
+aS'Angel from Montgomery - Prine'
+p523
+aS'Lakes of Canada - Innocence Mission'
+p524
+aS'Stardust - Carmichael'
+p525
+aS'Georgia on My Mind - Carmichael'
+p526
+aS'Diamonds & Rust - Baez'
+p527
+aS"Don't Get Around Much Anymore - Ink Spots [1]"
+p528
+aS'Farther Along - Flying Burrito Brothers'
+p529
+aS'Wild Horses - Flying Burrito Brothers'
+p530
+aS'Waterloo Sunset - Kinks'
+p531
+aS'Night They Drove Old Dixie Down - Band [1]'
+p532
+aS'Better Be Home Soon - Crowded House'
+p533
+aS"(There's) Always Something There to Remind Me - Shaw"
+p534
+aS'Got Me Wrong - Alice In Chains'
+p535
+aS'For the Good Times - Kristofferson'
+p536
+aS'All Things Must Pass - Harrison'
+p537
+aS"Can't Hardly Wait - Replacements"
+p538
+aS"Here's Where the Story Ends - Sundays"
+p539
+aS"She's Got You - Cline"
+p540
+aS"Bricklayer's Beautiful Daughter - Ackerman"
+p541
+aS'Nights in White Satin - Moody Blues'
+p542
+aS'Take It to the Limit - Eagles [1]'
+p543
+aS"Willin' - Little Feat"
+p544
+aS'For the Dead - Gene [1]'
+p545
+aS'Crying Game - Boy George'
+p546
+aS'I Got You Babe - Sonny & Cher'
+p547
+aS'She Blinded Me With Science - Dolby'
+p548
+aS'Human Fly - Cramps'
+p549
+aS'Can Your Pussy Do the Dog? - Cramps'
+p550
+aS'Looking for a Kiss - New York Dolls'
+p551
+aS'Oh Yeah - Yello'
+p552
+aS'You Took the Words Right Out of My Mouth (Hot Summer Night) - Meat Loaf'
+p553
+aS'Paradise by the Dashboard Light - Meat Loaf'
+p554
+aS'Killer Queen - Queen'
+p555
+aS'Fat Bottomed Girls - Queen'
+p556
+aS'Tainted Love - Soft Cell'
+p557
+aS'Blockbuster - Sweet'
+p558
+aS'Volare - Chilton'
+p559
+aS'Theme of Luxury - Fantastic Plastic Machine'
+p560
+aS"(We Don't Need This) Fascist Groove Thang - Heaven Seventeen"
+p561
+aS'Crucified - Army Of Lovers'
+p562
+aS"Hard Day's Night - Sellers"
+p563
+aS'Ride a White Swan - T.Rex'
+p564
+aS'Beat Goes On - Sonny & Cher'
+p565
+aS'No More Mr. Nice Guy - Cooper'
+p566
+aS'How to Be a Millionaire - ABC'
+p567
+aS'Theme from New York -  New York'
+p568
+aS'Glamour Girl - Chicks On Speed/Punk Anderson'
+p569
+aS'B.O.B. - Outkast'
+p570
+aS'B.L. Got Soul - Spencer'
+p571
+aS'Video Killed the Radio Star - Buggles'
+p572
+aS'I Can Never Go Home Anymore - Shangri - Las'
+p573
+aS'Bohemian Rhapsody - Queen'
+p574
+aS"These Boots Are Made for Walkin' - Sinatra"
+p575
+aS'20th Century Boy - T Rex'
+p576
+aS'Supermodel (You Better Work) - RuPaul/Page'
+p577
+aS'Cool Places - Wiedlin'
+p578
+aS"Da Da Da I Don't Love You You Don't Love Me Aha Aha Aha - Trio [4]"
+p579
+aS'Some Velvet Morning - Nancy Sinatra & Lee Hazlewood'
+p580
+aS'Something for the Weekend - Divine Comedy'
+p581
+aS'Be My Light -  Be My Guide'
+p582
+aS'Lump - Presidents Of The United States Of America'
+p583
+aS'One Week - Barenaked Ladies'
+p584
+aS"Brooklyn Zoo - Ol' Dirty Bastard"
+p585
+aS'Della and the Dealer - Axton'
+p586
+aS'Here I Am - Lovett'
+p587
+aS'Jerry Was a Race Car Driver - Primus'
+p588
+aS'All American Boy - Bare'
+p589
+aFnan
+aS'Piss up a Rope - Ween'
+p590
+aS'Sheena Is a Punk Rocker - Ramones'
+p591
+aS"Der Fuehrer's Face - Jones"
+p592
+aS'It Was a Very Good Beer - Simpsons'
+p593
+aS"Parents Just Don't Understand - DJ Jazzy Jeff & the Fresh Prince"
+p594
+aS'Marie Provost - Lowe'
+p595
+aS'Purple Toupee - They Might Be Giants'
+p596
+aS'Lawyers -  Guns and Money'
+p597
+aS"Feet Don't Fail Me Now - Utopia"
+p598
+aS'Hot Rod Lincoln - Commander Cody & His Lost Planet Airmen'
+p599
+aS'Sex & Drugs & Rock & Roll - Ian Dury & The Blockheads'
+p600
+aS"Children's Story - Slick Rick/Wright"
+p601
+aS'Down Under - Men At Work'
+p602
+aS"Don't Worry -  Be Happy"
+p603
+aS'Tommy the Cat - Primus'
+p604
+aS"I'm Chief Kamanawanalea (We're the Royal Macadamia Nuts) - Turtles"
+p605
+aS'Peaches - Presidents Of The United States Of America'
+p606
+aS'Purple People Eater - Wooley'
+p607
+aS'Monster Mash - Pickett'
+p608
+aS'Transfusion - Nervous Norvus'
+p609
+aS'Purple People Eater - Colder'
+p610
+aS'Vapors - Biz Markie'
+p611
+aS'Be My Yoko Ono - Barenaked Ladies'
+p612
+aS'(She Was A) Hotel Detective - They Might Be Giants'
+p613
+aS'Martian Boogie - Brownsville Station'
+p614
+aS'Any Old Iron - Sellers'
+p615
+aS'Grandma Got Run over by a Reindeer - Elmo & Patsy'
+p616
+aS'Streak - Stevens'
+p617
+aS'Fish Heads - Barnes & Barnes'
+p618
+aS'Silly Love Songs - Wings'
+p619
+aS'Bad Touch - Bloodhound Gang'
+p620
+aS"Surfin' Bird - Trashmen"
+p621
+aS'Baggy Trousers - Madness [1]'
+p622
+aS'William Tell Overture - Jones'
+p623
+aS'Cocktails for Two - Jones'
+p624
+aS'Take the Skinheads Bowling - Camper Van Beethoven'
+p625
+aS'All I Want for Christmas Is My Two Front Teeth - Jones'
+p626
+aS'Judy Is a Punk - Ramones'
+p627
+aS'King Tut - Martin'
+p628
+aS'Witch Doctor - Chipmunks'
+p629
+aS'Barbie Girl - Aqua [1]'
+p630
+aS'(How Much) Is That Doggie in the Window? - Haynes'
+p631
+aS'I Am a Cat - Shonen Knife'
+p632
+aS'I Know What I Like (In Your Wardrobe) - Genesis [1]'
+p633
+aS'Judy and the Dream of Horses - Belle & Sebastian'
+p634
+aS'We Gotta Get You a Woman - Rundgren'
+p635
+aS'Morning Girl - Neon Philharmonic'
+p636
+aS'Girl from Mars - Ash [1]'
+p637
+aS'Baby Lemonade - Barrett'
+p638
+aS'Year of the Cat - Stewart'
+p639
+aS'Sunshine Superman - Donovan [1]'
+p640
+aS'Ghost at Number One - Jellyfish'
+p641
+aS'Potholes in My Lawn - De La Soul'
+p642
+aS'I Am a Scientist - Guided By Voices'
+p643
+aS'Jane - Barenaked Ladies'
+p644
+aS'Raspberry Beret - Prince & The Revolution'
+p645
+aS'I Enjoy Being a Boy (In Love With You) - Banana Splits'
+p646
+aS"Don't Let's Start - They Might Be Giants"
+p647
+aS'Me and My Arrow - Nilsson'
+p648
+aS'Another Nail in My Heart - Squeeze [UK]'
+p649
+aS'Lazy Line Painter Jane - Belle & Sebastian'
+p650
+aS'History Never Repeats - Split Enz'
+p651
+aS'Flowers in the Rain - Move [1]'
+p652
+aS'Blackberry Way - Move [1]'
+p653
+aS'Dear Mr. Fantasy - Traffic'
+p654
+aS"Your Feet's Too Big - Waller"
+p655
+aS'Another Day - McCartney'
+p656
+aS'Octopus - Barrett'
+p657
+aS"She Don't Use Jelly - Flaming Lips"
+p658
+aS'Troubbble - Malkmus'
+p659
+aS'Pablo Picasso - The Modern Lovers'
+p660
+aS"59th Street Bridge Song (Feelin' Groovy) - Simon & Garfunkel"
+p661
+aS'Winchester Cathedral - New Vaudeville Band'
+p662
+aS'Balloon Man - Hitchcock'
+p663
+aS'Arnold Layne - Pink Floyd'
+p664
+aS'Human Behaviour - Bjork'
+p665
+aS'Crazy Little Thing Called Love - Queen'
+p666
+aS'It Could Have Been a Brilliant Career - Belle & Sebastian'
+p667
+aS'Bonita Applebum - Tribe Called Quest'
+p668
+aS'King of the Road - Miller'
+p669
+aS'Eyesight to the Blind - Allison'
+p670
+aS'Mama Told Me (Not to Come) - Newman'
+p671
+aS'Political Science - Newman'
+p672
+aS"(I Don't Want to Go To) Chelsea - Costello"
+p673
+aS"It's the End of the World as We Know It (And I Feel Fine) - REM"
+p674
+aS'Black Cow - Steely Dan'
+p675
+aS'Girl U Want - Devo'
+p676
+aS'You Never Can Tell - Berry'
+p677
+aS'Substitute - Who [1]'
+p678
+aS'Chanson de Jacky - Brel'
+p679
+aS"John -  I'm Only Dancing"
+p680
+aS"You Can't Do That - Nilsson"
+p681
+aS'Poor -  Poor Pitiful Me'
+p682
+aS'Cigarettes and Chocolate Milk - Wainwright'
+p683
+aS'Is That Love - Squeeze [UK]'
+p684
+aS"So You Think You're in Love - Robyn Hitchcock & the Egyptians"
+p685
+aS'Marie Provost - Lowe'
+p686
+aS'Suburbia - Pet Shop Boys'
+p687
+aS'Sex & Drugs & Rock & Roll - Dury'
+p688
+aS'This Charming Man - Smiths'
+p689
+aS'Panic - Smiths'
+p690
+aS'I Feel So Good - Thompson'
+p691
+aS'Ana Ng - They Might Be Giants'
+p692
+aS'Scenario - Tribe Called Quest'
+p693
+aS'Becoming More Like Alfie - Divine Comedy'
+p694
+aS'Rent - Pet Shop Boys'
+p695
+aS'Highway 61 Revisited - Dylan'
+p696
+aS"Everybody's Happy Nowadays - Buzzcocks"
+p697
+aS'Advice to the Graduate - Silver Jews'
+p698
+aS'Always Look on the Bright Side of Life - Monty Python'
+p699
+aS'Dishes - Pulp'
+p700
+aS'Subterranean Homesick Blues - Dylan'
+p701
+aS'Greetings to the New Brunette - Bragg'
+p702
+aS"Honk if You're Lonely - Silver Jews"
+p703
+aS'Boy With the Arab Strap - Belle & Sebastian'
+p704
+aS'Babies - Pulp'
+p705
+aS'Ballad of Mott the Hoople (26th March 1972 -  Z\xc3\xbcrich)'
+p706
+aS'Do You Remember the First Time? - Pulp'
+p707
+aS'God Will - Lovett'
+p708
+aS'Friends of P. - Rentals'
+p709
+aS'Beauty Mark - Wainwright'
+p710
+aS'Dead Skunk - Wainwright'
+p711
+aS'Eye Know - De La Soul'
+p712
+aS'Me -  Myself and I'
+p713
+aS'I.G.Y. - Fagen'
+p714
+aS'Heart of Glass - Blondie'
+p715
+aS'Dear God - XTC'
+p716
+aS'Rapture - Blondie'
+p717
+aS'Home in My Hand - Brinsley Schwarz'
+p718
+aS"Don't Come Around Here No More - Petty"
+p719
+aS'Surfing Magazines - Go - Betweens'
+p720
+aS'Mrs. Robinson - Simon & Garfunkel'
+p721
+aS'Fuck and Run - Phair'
+p722
+aS'Cynical Girl - Crenshaw'
+p723
+aS"Sailin' Shoes - Little Feat"
+p724
+aS'Jenny and the Ess - Dog - Malkmus'
+p725
+aS"Girls Ain't Nothing But Trouble - DJ Jazzy Jeff & the Fresh Prince"
+p726
+aS'Sunny Afternoon - Kinks'
+p727
+aS'Reasons to Be Cheerful -  Pt. 3'
+p728
+aS'Jump - Aztec Camera'
+p729
+aS'Stars of Track and Field - Belle & Sebastian'
+p730
+aS"If You're Feeling Sinister - Belle & Sebastian"
+p731
+aS'I Was a Stranger - Smog'
+p732
+aS'Girl Like You - Collins'
+p733
+aS"Don't Think Twice -  It's All Right"
+p734
+aS'Godzilla - Blue Oyster Cult'
+p735
+aS'Get at Me Dog - DMX [1]'
+p736
+aS'Ace of Spades - Motorhead'
+p737
+aS'Handsome and Gretel - Babes In Toyland'
+p738
+aS'Mama Said Knock You Out - LL Cool J'
+p739
+aS'Eton Rifles - Jam [1]'
+p740
+aS"Gary Gilmore's Eyes - Adverts"
+p741
+aS'Fire - Jimi Hendrix Experience'
+p742
+aS"MBV Arkestra (If They Move Kill 'Em) - Primal Scream"
+p743
+aS'Break on Through (To the Other Side) - Doors'
+p744
+aS'Quarantined - At The Drive In'
+p745
+aS'Bring the Pain - Method Man'
+p746
+aS'Blues from a Gun - Jesus & Mary Chain'
+p747
+aS'Breaking the Law - Judas Priest'
+p748
+aS'Attitude - Misfits'
+p749
+aS'Am I Evil? - Diamond Head'
+p750
+aS'You Really Got Me - Kinks'
+p751
+aS'Dead Joe - Birthday Party'
+p752
+aS'Flava in Ya Ear - Mack'
+p753
+aS'Bang Your Head (Metal Health) - Quiet Riot'
+p754
+aS'Breadfan - Budgie [Metal]'
+p755
+aS'Smack My Bitch Up - Prodigy [1]'
+p756
+aS'For the Love of Ivy - Gun Club'
+p757
+aS'Like a Rolling Stone - Dylan'
+p758
+aS'Bone Machine - Pixies'
+p759
+aS'Holy Ghost - Ayler'
+p760
+aS'Check Yo Self - Ice Cube/Das EFX'
+p761
+aS"Better Get Hit in Yo' Soul - Mingus"
+p762
+aS'Personality Crisis - New York Dolls'
+p763
+aS'Hambone - Shepp'
+p764
+aS'Devil With a Blue Dress On/Good Golly Miss Molly - Ryder'
+p765
+aS'L.A. Blues - Stooges'
+p766
+aS'Whole Lotta Love - Led Zeppelin'
+p767
+aS'Bells - Ayler'
+p768
+aS'Theme From Captain Black - Ulmer'
+p769
+aS'Devil Went Down to Georgia - Daniels'
+p770
+aS"Won't Get Fooled Again - Who [1]"
+p771
+aS'Big Nick - Williams'
+p772
+aS'Sky Is Crying - James'
+p773
+aS'Peliyot - Masada [1]'
+p774
+aS'Summertime Blues - Who [1]'
+p775
+aS"World's a Mess -  It's in My Kiss"
+p776
+aS'Fortunate Son - Creedence Clearwater Revival'
+p777
+aS'God Save the Queen - Sex Pistols'
+p778
+aS'Cold Turkey - Lennon'
+p779
+aS'Gloria: In Excelsis Deo/Gloria - Smith'
+p780
+aS'Oh Bondage -  Up Yours!'
+p781
+aS'Rebel Without a Pause - Public Enemy'
+p782
+aS'Levels and Degrees of Light - Abrams'
+p783
+aS'Free Jazz - Coleman'
+p784
+aS'Come to Daddy - Aphex Twin'
+p785
+aS'Dark Was the Night (Cold Was the Ground) - Johnson'
+p786
+aS'Bal Masque - Douglas'
+p787
+aS'House of the Rising Sun - Animals'
+p788
+aS'Big New Prinz - Fall'
+p789
+aS'Fact and Fiction - Vandermark Five'
+p790
+aS'California \xc3\x9cber Alles - Dead Kennedys'
+p791
+aS'Isolation - Joy Division'
+p792
+aS'Cool Drink of Water Blues - Johnson'
+p793
+aS'Complete Control - Clash'
+p794
+aS'Tough Sledding - Steelwool Trio'
+p795
+aS'Come on in My Kitchen - Johnson'
+p796
+aS'Way I Am - Eminem'
+p797
+aS'Ballad of Medgar Evers - Ochs'
+p798
+aS'Machine Gun - The Peter Br\xc3\xb6tzmann Quartet'
+p799
+aS'Spirits Rejoice - Ayler'
+p800
+aS'Killing in the Name - Rage Against The Machine'
+p801
+aS'Mother - Lennon'
+p802
+aS"Evil - Howlin' Wolf"
+p803
+aS'Venus in Furs - Velvet Underground & Nico'
+p804
+aS'Repeater - Fugazi'
+p805
+aS'Black Sabbath - Black Sabbath'
+p806
+aS'Me and a Gun - Amos'
+p807
+aS'I Got You - Split Enz'
+p808
+aS"Can't Stand Losing You - Police"
+p809
+aS'Love Comes in Spurts - Richard Hell & the Voidoids'
+p810
+aS'Cross Bones Style - Cat Power'
+p811
+aS'Good Life - Weezer'
+p812
+aS'Ever Fallen in Love? - Buzzcocks'
+p813
+aS'Got the Time - Jackson'
+p814
+aS'Fa C\xc3\xa9 - La - Feelies'
+p815
+aS'Radio -  Radio'
+p816
+aS'Transmission - Jou Division'
+p817
+aS'(I Want to Be an) Anglepoise Lamp - Hitchcock'
+p818
+aS'30 Seconds Over Tokyo - Pere Ubu'
+p819
+aS'Final Solution - Ubu'
+p820
+aS'96 Tears - Question Mark & The Mysterians'
+p821
+aS'Black Steel - Tricky [1]'
+p822
+aS"He's a Whore - Cheap Trick"
+p823
+aS"(I Can't Get No) Satisfaction - Devo"
+p824
+aS'For the Damaged - Blonde Redhead'
+p825
+aS'I Can See for Miles - Who [1]'
+p826
+aS"'A' Bomb in Wardour Street - Jam"
+p827
+aS'Get Over You - Undertones'
+p828
+aS"White Lines (Don't Don't Do It) - Grandmaster Melle Mel/Grandmaster Flash"
+p829
+aS'Hard to Explain - Strokes'
+p830
+aS'Killing an Arab - Cure'
+p831
+aS'Senses Working Overtime - XTC'
+p832
+aS'This Is Pop? - XTC'
+p833
+aS'Psycho Killer - Talking Heads'
+p834
+aS'Do It Clean - Echo & the Bunnymen'
+p835
+aS'I Am the Fly - Wire'
+p836
+aS'Mr. Brownstone - Guns N Roses'
+p837
+aS'Sheela - Na - Gig - Harvey'
+p838
+aS"You Can't Have Me - Big Star"
+p839
+aS'Inflated Tear - Kirk'
+p840
+aS'Hurricane Fighter Plane - Red Krayola'
+p841
+aS'All Apologies - Nirvana [US]'
+p842
+aS'In the Meantime - Helmet'
+p843
+aS'Freak on a Leash - Korn [1]'
+p844
+aS'More Human Than Human - White Zombie'
+p845
+aS'Teen Age Riot - Sonic Youth'
+p846
+aS'Iron Man - Black Sabbath'
+p847
+aS"Death Valley '69 - Sonic Youth"
+p848
+aS'Giant Steps - Coltrane'
+p849
+aS"I'm Ready - Royal Trux"
+p850
+aS'Flip Your Wig - Husker Du'
+p851
+aS'Raisans - Dinosaur Jr.'
+p852
+aS'In a Jar - Dinosaur Jr.'
+p853
+aS'Feed Me With Your Kiss - My Bloody Valentine'
+p854
+aS'Loose - Stooges'
+p855
+aS'Gimme Shelter - Rolling Stones'
+p856
+aS'Alternative Ulster - Stiff Little Fingers'
+p857
+aS'War Pigs - Black Sabbath'
+p858
+aS'Autumn Acid - Mu Ziq'
+p859
+aS'Arc - Lite - Loop'
+p860
+aS"Don't Push Me Around - Zeros [1]"
+p861
+aS'Dick Johnson - Pussy Galore'
+p862
+aS'Y\xc3\xbc - Gung - Pussy Galore'
+p863
+aS'Taste of Cindy - Jesus And Mary Chain'
+p864
+aS"In 'N' Out of Grace - Mudhoney"
+p865
+aS'Duel - Swervedriver'
+p866
+aS'Chickamauga - Uncle Tupelo'
+p867
+aS'Anarchy in the U.K. - Sex Pistols'
+p868
+aS'Last Caress - Misfits'
+p869
+aS'Gluey Porch Treatments - Melvins'
+p870
+aS'In the City - Jam [1]'
+p871
+aS'Sonic Reducer - Dead Boys'
+p872
+aS'White Light/White Heat - Velvet Underground'
+p873
+aS'Personality Crisis - New York Dolls'
+p874
+aS'Truth Is Marching In - Ayler'
+p875
+aS'Nirvana - Hatfield'
+p876
+aS'Forming - Germs'
+p877
+aS'In Bloom - Nirvana [US]'
+p878
+aS'Modern Dance - Pere Ubu'
+p879
+aS'Epic - Faith No More'
+p880
+aS'Holiday in Cambodia - Dead Kennedys'
+p881
+aS'Cemetery Gates - Pantera'
+p882
+aS'Counting Backwards - Throwing Muses'
+p883
+aS"Been Caught Stealing - Jane's Addiction"
+p884
+aS'20 Jazz Funk Greats - Throbbing Gristle'
+p885
+aS'Nipples - Brotamann'
+p886
+aS'Blue Phase - Abdullah'
+p887
+aS"I Don't Care About You - Fear [1]"
+p888
+aS'Kiss Off - Violent Femmes'
+p889
+aS'Heavy Mental (for Wayne Krantz) - Berne'
+p890
+aS'Exploited Barmy Army - Exploited'
+p891
+aS'New Jack Hustler - Ice T'
+p892
+aS"Smokestack Lightning - Howlin' Wolf"
+p893
+aS"I'm a Man - Yardbirds"
+p894
+aS'Blow Your Mind - Redman'
+p895
+aS'Paradise City - Guns N Roses'
+p896
+aS'Deutschland (Has Gotta Die!) - Atari Teenage Riot'
+p897
+a.

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block body %}
+<script>
+var songlist = {{ songs|tojson }};
+var i =0;
+</script>
+
+<article>
+
+    <body onload="init();">
+	    <img id="im">
+	    <div class="cont">
+		<h2 id="ss" style="color: #ffffff"></h2>
+	    </div>
+
+	    <audio class ="audio" controls="controls" id="aud" autoplay="autoplay"><source src="/static/music/init.mp3"></audio>
+
+	    <p>
+		    <button onclick="stopWebcam();">Stop WebCam / See report</button> 
+		    <button onclick="play_again();">Get more music</button> 
+	    </p>
+	    
+	    <canvas hidden id="myCanvas" width="400" height="350"></canvas>
+    </body>
+	
+</article>
+
+<video style = "position:absolute;bottom:0;right:0;"width=200 height=200 id="video" controls autoplay></video>
+
+<script type='text/javascript'>
+      navigator.getUserMedia = ( navigator.getUserMedia ||
+                             navigator.webkitGetUserMedia ||
+                             navigator.mozGetUserMedia ||
+                             navigator.msGetUserMedia ||
+                             navigator.mediaDevices.getUserMedia);
+
+      var video;
+      var webcamStream;
+
+      //start webcam automatically
+      if (navigator.getUserMedia) 
+      {
+           navigator.getUserMedia (
+              {
+                 video: true,
+                 audio: false
+              },
+
+              function(localMediaStream) {
+                  video = document.querySelector('video');
+                 video.src = window.URL.createObjectURL(localMediaStream);
+                 webcamStream = localMediaStream;
+              },
+
+              function(err) {
+                 console.log("The following error occured: " + err);
+              }
+           );
+      } else 
+      {
+           console.log("getUserMedia not supported");
+      }      
+      
+      function stopWebcam() 
+      {
+	//get graph
+        webcamStream.stop();
+	window.location.href = "/graph";
+      }
+      var canvas, ctx;
+
+      function init() 
+      {
+        
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext('2d');
+      }
+   
+      function play_again() 
+      {
+        //get new playlist
+        window.location.href="/";
+      }
+
+      function snapshot() 
+      {
+         // Draws current image from the video element into the canvas
+        ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+        var dataURL = canvas.toDataURL("image/png");
+      	$.ajax({
+      	  type: "POST",
+      	  url: "/hook",
+      	  data:{
+      	    imageBase64: dataURL
+      	  },
+      	success:function(response){
+                  document.write(response); 
+             }
+      	}).done(function() {
+      	  console.log('sent');
+      	});
+      	console.log("here");
+      }
+
+      $('#aud').on('ended',function()
+      {
+	  //music player
+          var str = (songlist[i].split("_"))[0];
+          var name = (songlist[i].split("_"))[1];
+          document.getElementById('ss').innerHTML = name;
+          i=i+1;
+          if(i==20)
+          {
+              setTimeout(snapshot,5000);
+          }
+          $('#aud').attr('src', '/static/music/'+str);
+          $('#aud').load();
+                
+      });
+	if(songlist.length == 0)
+	{
+		//first entry- get snapshot
+		setTimeout(snapshot,5000);
+	}
+
+</script>
+{% endblock %}
+{% block nav %}
+{% endblock %}
