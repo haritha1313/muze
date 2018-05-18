@@ -14,6 +14,9 @@ six==1.11.0
 urllib3==1.22
 Werkzeug==0.14.1
 
+## Data credits
+http://www.music-ir.org/mirex/wiki/2007:Audio_Music_Mood_Classification
+
 ## How to run
 Edit line 17 in algorithmia.py to input your api key
 
