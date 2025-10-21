@@ -8,37 +8,19 @@ import re
 # make scripts/ importable
 SCRIPTS_DIR = Path(__file__).parent.resolve()
 sys.path.insert(0, str(SCRIPTS_DIR))
-import analyze_pr as analyzer  # noqa: E402
+import analyze_pr as analyzer  # reuse helpers from analyze_pr.py
 
 # ---- env ----
 REPO = os.getenv("REPO")
-PR_NUMBER = os.getenv("PR_NUMBER")  # set in workflow
+PR_NUMBER = os.getenv("PR_NUMBER")           # set in workflow
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 DOCS_DIR = os.getenv("DOCS_DIR", "docs")
 
-# SHAs may be empty on issue_comment, so we resolve them here if needed
-BASE_SHA = os.getenv("BASE_SHA") or ""
-HEAD_SHA = os.getenv("HEAD_SHA") or ""
-BASE_REF = os.getenv("BASE_REF") or "main"
+# ---- small helpers ----
+def git(*args, check=True) -> str:
+    out = subprocess.run(["git", *args], check=check, capture_output=True, text=True)
+    return out.stdout.strip()
 
-def sh(*args, check=True) -> str:
-    return subprocess.run(args, check=check, capture_output=True, text=True).stdout.strip()
-
-# Fallback SHA resolution (robust for issue_comment)
-try:
-    if not HEAD_SHA:
-        HEAD_SHA = sh("git", "rev-parse", "HEAD")
-    if not BASE_SHA:
-        sh("git", "fetch", "origin", BASE_REF, check=False)
-        base_local = f"origin/{BASE_REF}"
-        BASE_SHA = sh("git", "merge-base", HEAD_SHA, base_local)
-    # expose to analyzer (it reads env)
-    os.environ["BASE_SHA"] = BASE_SHA
-    os.environ["HEAD_SHA"] = HEAD_SHA
-except Exception as e:
-    print(f"⚠️ Fallback SHA resolution failed: {e}")
-
-# ---- helpers ----
 def generate_stub(func_name: str, module: str) -> str:
     return f"""## {func_name}
 
@@ -57,6 +39,7 @@ from {module} import {func_name}
 ```"""
 
 def suggest_doc_target(code_path: str) -> str:
+    """Prefer docs/<module>.md when present; otherwise README.md; else create module doc."""
     module = Path(code_path).stem
     prefer = Path(DOCS_DIR) / f"{module}.md"
     if prefer.exists():
@@ -66,7 +49,8 @@ def suggest_doc_target(code_path: str) -> str:
     return str(prefer)
 
 def names_not_mentioned(names):
-    docs_map = analyzer.load_docs_at_head()
+    """Filter function names that are not mentioned in docs at HEAD."""
+    docs_map = analyzer.load_docs_at_head()  # same logic as analyzer
     missing = []
     for nm in names:
         pat = re.compile(rf"(^|\W){re.escape(nm)}(\W|$)")
@@ -74,16 +58,20 @@ def names_not_mentioned(names):
             missing.append(nm)
     return missing
 
+# ---- core: compute exactly the same diff as the analyzer ----
 def get_added_and_modified_names_for_changed_code():
-    """Compute same diff as analyzer; return [(code_path, [names_needing_docs])]."""
-    changed_map = analyzer.list_changed_files()
+    """
+    Returns list of tuples (code_path, [names_needing_docs])
+    Names are added or signature-modified vs BASE_SHA.
+    """
+    changed_map = analyzer.list_changed_files()  # path -> status
     code_changed = [p for p in changed_map if analyzer.is_code_file(p)]
-    results = []
 
+    results = []
     for path in code_changed:
         head_src = Path(path).read_text(encoding="utf-8", errors="ignore") if Path(path).exists() else ""
         try:
-            base_src = sh("git", "show", f"{BASE_SHA}:{path}")
+            base_src = git("show", f"{analyzer.BASE_SHA}:{path}")
         except subprocess.CalledProcessError:
             base_src = ""
 
@@ -97,16 +85,19 @@ def get_added_and_modified_names_for_changed_code():
                           for n in (set(base_by_name) & set(head_by_name))
                           if base_by_name[n] != head_by_name[n]]
 
+        # names to check in docs = added names + modified names
         added_names = [s.split("(")[0] for s in added]
         modified_names = [after.split("(")[0] for (_before, after) in modified_pairs]
         to_check = sorted(set(added_names + modified_names))
 
+        # Keep only names not currently mentioned in docs
         missing = names_not_mentioned(to_check)
         if missing:
             results.append((path, missing))
     return results
 
 def append_stubs(grouped_updates):
+    """grouped_updates: dict[target_doc -> list[(code_path, func_name)]]"""
     for target_doc, items in grouped_updates.items():
         p = Path(target_doc)
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -118,9 +109,6 @@ def append_stubs(grouped_updates):
             f.write("\n\n## API Reference\n\n")
             f.write("\n\n".join(blocks))
             f.write("\n")
-
-def git(*args):
-    subprocess.run(["git", *args], check=True)
 
 def update_same_comment(commit_sha: str):
     """Append a success note to the original analysis comment (identified by hidden marker)."""
@@ -155,6 +143,7 @@ def main():
         print("✅ No undocumented added/modified functions to update.")
         return
 
+    # group by suggested doc target
     grouped = {}
     for code_path, missing_names in work:
         target_doc = suggest_doc_target(code_path)
@@ -173,7 +162,7 @@ def main():
         return
     git("push")
 
-    commit_sha = sh("git", "rev-parse", "--short", "HEAD")
+    commit_sha = git("rev-parse", "--short", "HEAD")
     update_same_comment(commit_sha)
 
 if __name__ == "__main__":
