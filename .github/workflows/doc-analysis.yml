@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -14,23 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # need merge base
+          fetch-depth: 0  # we need merge-base comparisons
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -V
-          pip install -r scripts/requirements.txt || true
+      - name: Install deps
+        run: pip install -r scripts/requirements.txt
 
-      - name: Run Analysis
+      - name: Run analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DOCS_DIR: docs
+          DOCS_EXTRAS: README.md  # comma-separated list; keep README in scope
         run: python scripts/analyze_pr.py
