@@ -102,3 +102,6 @@ def clear_emotion_history():
     global emot_list
     emot_list = []
     return len(emot_list)
+
+def get_emotion_count():
+    return len(emot_list)
