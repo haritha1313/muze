@@ -33,6 +33,9 @@ def get_graph():
     songs = get_playlist()
     return flask.render_template("musi.html", songs=songs)
 
+def validate_snapshot():
+    import os
+    return os.path.exists("snapshots/pic.png")
 
 if __name__ == '__main__':
     app.run(debug=True)

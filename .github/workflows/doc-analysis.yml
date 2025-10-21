@@ -3,6 +3,8 @@ name: Doc Analysis
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: write
@@ -34,3 +36,36 @@ jobs:
           DOCS_DIR: docs
           DOCS_EXTRAS: README.md  # comma-separated list; keep README in scope
         run: python scripts/analyze_pr.py
+
+  update-docs:
+    if: >
+      github.event_name == 'issue_comment' &&
+      contains(github.event.comment.body, '/update-docs') &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'MEMBER' ||
+       github.event.comment.author_association == 'COLLABORATOR')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          repository: ${{ github.repository }}
+          ref: ${{ github.event.issue.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install -r scripts/requirements.txt || true
+
+      - name: Commit doc stubs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BASE_SHA: ${{ github.event.issue.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.issue.pull_request.head.sha }}
+          DOCS_DIR: docs
+          DOCS_EXTRAS: README.md
+        run: python scripts/update_docs.py
