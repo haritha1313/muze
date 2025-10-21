@@ -37,5 +37,11 @@ def validate_snapshot():
     import os
     return os.path.exists("snapshots/pic.png")
 
+def get_snapshot_size():
+    import os
+    if os.path.exists("snapshots/pic.png"):
+        return os.path.getsize("snapshots/pic.png")
+    return 0
+
 if __name__ == '__main__':
     app.run(debug=True)
