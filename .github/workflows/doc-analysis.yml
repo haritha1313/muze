@@ -45,13 +45,31 @@ jobs:
       github.event.issue.pull_request &&
       contains(github.event.comment.body, '/update-docs')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
+      - name: Get PR details
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('ref', pr.data.head.ref);
+            core.setOutput('sha', pr.data.head.sha);
+            core.setOutput('base_sha', pr.data.base.sha);
+            core.setOutput('base_ref', pr.data.base.ref);
+
       - name: Checkout PR head
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           repository: ${{ github.repository }}
-          ref: ${{ github.event.issue.pull_request.head.ref }}
+          ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
@@ -67,8 +85,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.issue.number }}
-          BASE_SHA: ${{ github.event.issue.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.issue.pull_request.head.sha }}
+          BASE_SHA: ${{ steps.pr.outputs.base_sha }}   # filled now
+          HEAD_SHA: ${{ steps.pr.outputs.sha }}        # filled now
+          BASE_REF: ${{ steps.pr.outputs.base_ref }}   # fallback help
           DOCS_DIR: docs
           DOCS_EXTRAS: README.md
         run: python scripts/update_docs.py

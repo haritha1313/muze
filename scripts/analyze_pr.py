@@ -10,8 +10,8 @@ import textwrap
 # ---- env ----
 REPO = os.getenv("REPO")
 PR_NUMBER = os.getenv("PR_NUMBER")
-BASE_SHA = os.getenv("BASE_SHA")
-HEAD_SHA = os.getenv("HEAD_SHA")
+BASE_SHA = os.getenv("BASE_SHA", "")
+HEAD_SHA = os.getenv("HEAD_SHA", "")
 DOCS_DIR = os.getenv("DOCS_DIR", "docs")
 DOCS_EXTRAS = [p.strip() for p in os.getenv("DOCS_EXTRAS", "README.md").split(",") if p.strip()]
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
