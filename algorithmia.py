@@ -97,3 +97,8 @@ def get_emotion_grid():
     #save image
     plt.savefig("static/graph.jpg")
     plt.show()
+
+def clear_emotion_history():
+    global emot_list
+    emot_list = []
+    return len(emot_list)
