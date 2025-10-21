@@ -37,5 +37,17 @@ def validate_snapshot():
     import os
     return os.path.exists("snapshots/pic.png")
 
+def cleanup_old_snapshots():
+    import os
+    import time
+    snapshot_dir = "snapshots"
+    if os.path.exists(snapshot_dir):
+        for filename in os.listdir(snapshot_dir):
+            filepath = os.path.join(snapshot_dir, filename)
+            if os.path.isfile(filepath) and filename.endswith('.png'):
+                file_age = time.time() - os.path.getmtime(filepath)
+                if file_age > 3600:  # older than 1 hour
+                    os.remove(filepath)
+
 if __name__ == '__main__':
     app.run(debug=True)
