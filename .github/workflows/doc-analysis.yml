@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   analyze:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,18 +41,32 @@ jobs:
   update-docs:
     if: >
       github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
       contains(github.event.comment.body, '/update-docs') &&
       (github.event.comment.author_association == 'OWNER' ||
        github.event.comment.author_association == 'MEMBER' ||
        github.event.comment.author_association == 'COLLABORATOR')
     runs-on: ubuntu-latest
     steps:
+      - name: Get PR details
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('ref', pr.data.head.ref);
+            core.setOutput('sha', pr.data.head.sha);
+            core.setOutput('base_sha', pr.data.base.sha);
+
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          repository: ${{ github.repository }}
-          ref: ${{ github.event.issue.pull_request.head.ref }}
+          ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v5
@@ -64,8 +79,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          BASE_SHA: ${{ github.event.issue.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.issue.pull_request.head.sha }}
+          BASE_SHA: ${{ steps.pr.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.pr.outputs.sha }}
           DOCS_DIR: docs
           DOCS_EXTRAS: README.md
         run: python scripts/update_docs.py
