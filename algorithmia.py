@@ -105,3 +105,9 @@ def clear_emotion_history():
 
 def get_emotion_count():
     return len(emot_list)
+
+def get_last_emotion():
+    if emot_list:
+        emotion_reverse_map = {1: 'Angry', 11: 'Neutral', 21: 'Happy', 31: 'Sad', 41: 'Surprise', 51: 'Disgust', 61: 'Fear'}
+        return emotion_reverse_map.get(emot_list[-1], 'Unknown')
+    return None
