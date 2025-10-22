@@ -66,6 +66,7 @@ class LLMDocGenerator:
         "gpt-3.5-turbo": {"input": 0.0005, "output": 0.0015},
         "claude-3-opus": {"input": 0.015, "output": 0.075},
         "claude-3-sonnet": {"input": 0.003, "output": 0.015},
+        "claude-3-5-sonnet-20241022": {"input": 0.003, "output": 0.015},
         "local": {"input": 0, "output": 0},
     }
 
@@ -107,7 +108,7 @@ class LLMDocGenerator:
         elif self.provider == LLMProvider.OPENAI:
             self.model = "gpt-4-turbo"
         elif self.provider == LLMProvider.ANTHROPIC:
-            self.model = "claude-3-sonnet-20240229"
+            self.model = "claude-3-5-sonnet-20241022"
         else:
             self.model = "local-model"
 
