@@ -62,7 +62,7 @@ Muze follows a client-server architecture with external AI services:
 - Image processing and storage
 - Emotion detection coordination
 - Playlist generation logic
-- Static file serving
+- File serving
 
 **Key Technologies**:
 - Flask web framework
