@@ -43,6 +43,9 @@ DOCS_EXTRAS = [p.strip() for p in os.getenv("DOCS_EXTRAS", "README.md").split(",
 
 CODE_EXTS = {".py", ".js", ".ts"}
 
+# Paths to exclude from documentation analysis (bot infrastructure, not product code)
+EXCLUDED_PATHS = ["scripts/", ".github/", "tests/"]
+
 
 # ---- Git Helpers ----
 def run_git(*args, check=True) -> str:
@@ -63,7 +66,7 @@ def git_config():
 
 
 def get_changed_files() -> Dict[str, str]:
-    """Get changed files with their status"""
+    """Get changed files with their status (excluding bot infrastructure)"""
     files = {}
     output = run_git("diff", "--name-status", f"{BASE_SHA}...{HEAD_SHA}")
     for line in output.splitlines():
@@ -72,7 +75,9 @@ def get_changed_files() -> Dict[str, str]:
         parts = line.split("\t")
         status = parts[0]
         path = parts[-1]
-        files[path] = status
+        # Filter out excluded paths (bot infrastructure)
+        if not any(path.startswith(excluded) for excluded in EXCLUDED_PATHS):
+            files[path] = status
     return files
 
 
@@ -221,7 +226,7 @@ def is_entity_documented(entity: str, docs: Dict[str, str]) -> bool:
 
 
 def find_best_doc_file(filepath: str) -> str:
-    """Determine best documentation file for code file"""
+    """Determine best documentation file for code file (always in docs/)"""
     module = Path(filepath).stem
 
     # Try docs/<module>.md
@@ -229,11 +234,12 @@ def find_best_doc_file(filepath: str) -> str:
     if prefer.exists():
         return str(prefer)
 
-    # Try README.md
-    if Path("README.md").exists():
-        return "README.md"
+    # Check if there's a general API reference doc
+    api_ref = Path(DOCS_DIR) / "API-Reference.md"
+    if api_ref.exists():
+        return str(api_ref)
 
-    # Create new doc file
+    # Create new doc file in docs/
     return str(prefer)
 
 
@@ -457,6 +463,7 @@ def main():
     print(f"\nFound {len(changes)} functions needing documentation:")
     for change in changes:
         print(f"  - {change['file']}::{change['entity']} ({change['reason']})")
+    print(f"\nℹ️  Excluded paths: {', '.join(EXCLUDED_PATHS)}")
 
     # Generate documentation
     print("\n" + "-" * 80)
@@ -473,7 +480,7 @@ def main():
 
     # Write documentation
     print("\n" + "-" * 80)
-    print("Step 3: Writing documentation files...")
+    print(f"Step 3: Writing documentation files to {DOCS_DIR}/...")
     print("-" * 80)
 
     total_cost = 0.0

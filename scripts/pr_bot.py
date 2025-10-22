@@ -46,6 +46,10 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 ENABLE_LLM = os.getenv("ENABLE_LLM", "false").lower() == "true"
+DOCS_DIR = os.getenv("DOCS_DIR", "docs")
+
+# Paths to exclude from documentation analysis (bot infrastructure, not product code)
+EXCLUDED_PATHS = ["scripts/", ".github/", "tests/"]
 
 
 # ---- Git Helpers ----
@@ -61,10 +65,16 @@ def run_git(*args, check=True) -> str:
 
 
 def get_changed_files() -> List[str]:
-    """Get list of changed files in PR"""
+    """Get list of changed files in PR (excluding bot infrastructure)"""
     try:
         output = run_git("diff", "--name-only", f"{BASE_SHA}...{HEAD_SHA}")
-        return [f.strip() for f in output.split('\n') if f.strip()]
+        files = [f.strip() for f in output.split('\n') if f.strip()]
+        # Filter out excluded paths (bot infrastructure)
+        filtered = []
+        for f in files:
+            if not any(f.startswith(excluded) for excluded in EXCLUDED_PATHS):
+                filtered.append(f)
+        return filtered
     except subprocess.CalledProcessError:
         return []
 
@@ -104,8 +114,9 @@ def run_hotpath_analysis() -> Optional[Dict]:
     results = {
         "changed_files": changed_files,
         "code_files": [f for f in changed_files if f.endswith(('.py', '.js', '.ts'))],
-        "doc_files": [f for f in changed_files if f.endswith(('.md', '.rst', '.txt'))],
-        "needs_analysis": True
+        "doc_files": [f for f in changed_files if f.startswith(DOCS_DIR + '/') or f.endswith(('.md', '.rst', '.txt'))],
+        "needs_analysis": True,
+        "excluded_note": f"Excluded paths: {', '.join(EXCLUDED_PATHS)}"
     }
 
     print(f"[Hot-Path] Found {len(results['code_files'])} code files changed")
@@ -249,16 +260,23 @@ def format_pr_comment(
         lines.append("### 📝 Changed Code Files")
         lines.append("")
 
-        for f in code_files[:10]:  # Limit display
-            lines.append(f"- `{f}`")
+        if code_files:
+            for f in code_files[:10]:  # Limit display
+                lines.append(f"- `{f}`")
 
-        if len(code_files) > 10:
-            lines.append(f"- ... and {len(code_files) - 10} more")
-    else:
-        lines.append("### ℹ️ Basic Analysis")
-        lines.append("")
-        lines.append("Hot-Path components not fully configured.")
-        lines.append("Enable full analysis by setting up GitHub API access.")
+            if len(code_files) > 10:
+                lines.append(f"- ... and {len(code_files) - 10} more")
+        else:
+            lines.append("*No product code files changed (excluded bot infrastructure)*")
+
+        if analysis.get("excluded_note"):
+            lines.append("")
+            lines.append(f"<sub>ℹ️ {analysis['excluded_note']}</sub>")
+        else:
+            lines.append("### ℹ️ Basic Analysis")
+            lines.append("")
+            lines.append("Hot-Path components not fully configured.")
+            lines.append("Enable full analysis by setting up GitHub API access.")
 
     lines.append("")
 

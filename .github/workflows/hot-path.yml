@@ -45,7 +45,10 @@ jobs:
 
           # API Keys (add to GitHub Secrets)
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          # Alternative: ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # Documentation configuration
+          DOCS_DIR: docs
         run: |
           cd scripts/hotpath
           export PYTHONPATH="${PYTHONPATH}:$(pwd)"
@@ -108,7 +111,7 @@ jobs:
 
           # PAID MODE: LLM required
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          # Alternative: ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
           # Documentation configuration
           DOCS_DIR: docs

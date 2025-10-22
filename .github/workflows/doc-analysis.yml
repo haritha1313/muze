@@ -1,10 +1,14 @@
-name: Doc Analysis
+name: Doc Analysis (DISABLED - using hot-path.yml instead)
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-  issue_comment:
-    types: [created]
+# DISABLED: This workflow is replaced by hot-path.yml
+# To re-enable, uncomment the 'on:' section below
+on: workflow_dispatch  # Manual trigger only
+
+# on:
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+#   issue_comment:
+#     types: [created]
 
 permissions:
   contents: write
