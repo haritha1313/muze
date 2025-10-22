@@ -137,7 +137,7 @@ jobs:
 
 ### scripts/update_docs.py
 
-**Purpose**: Generate documentation for undocumented functions
+**Purpose**: Generate documentation for undocumented code
 
 **Key Functions**:
 
