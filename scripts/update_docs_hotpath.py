@@ -391,7 +391,7 @@ def generate_llm_documentation(changes: List[Dict]) -> Dict[str, List[Dict]]:
 
 # ---- Documentation Writing ----
 def append_documentation(doc_file: str, sections: List[Dict]):
-    """Append generated documentation to file"""
+    """Update or append generated documentation to file"""
     doc_path = Path(doc_file)
     doc_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -402,18 +402,58 @@ def append_documentation(doc_file: str, sections: List[Dict]):
         # Create new file with header
         existing = f"# {doc_path.stem.replace('_', ' ').title()}\n\n"
 
-    # Append new sections
+    # Ensure API Reference section exists
+    if "## API Reference" not in existing:
+        existing += "\n\n## API Reference\n\n"
+
+    # Process each section - replace if exists, append if new
     new_content = existing
 
-    if "## API Reference" not in existing:
-        new_content += "\n\n## API Reference\n\n"
-
     for section in sections:
-        # Add a separator and the new content
-        new_content += f"\n### {section['entity']}\n\n"
-        new_content += f"*Source: `{section['file']}`*\n\n"
-        new_content += section['content']
-        new_content += "\n\n"
+        entity_name = section['entity']
+
+        # Build new section content
+        new_section = f"### {entity_name}\n\n"
+        new_section += f"*Source: `{section['file']}`*\n\n"
+        new_section += section['content']
+
+        # Try to find existing section for this entity
+        # Look for patterns like "## entity_name" or "### entity_name"
+        import re
+
+        # Match heading followed by entity name (case insensitive)
+        pattern = rf"(^|\n)(###+)\s+{re.escape(entity_name)}\s*\n(.*?)(?=\n##|\n###|\Z)"
+        match = re.search(pattern, new_content, re.IGNORECASE | re.DOTALL)
+
+        if match:
+            # Replace existing section
+            old_section = match.group(0)
+            # Preserve the heading level from existing section
+            heading_level = match.group(2)
+
+            replacement = f"\n{heading_level} {entity_name}\n\n"
+            replacement += f"*Source: `{section['file']}`*\n\n"
+            replacement += section['content']
+
+            new_content = new_content.replace(old_section, replacement)
+            print(f"    Replaced existing section for {entity_name}")
+        else:
+            # Append new section
+            # Find the end of API Reference section or end of file
+            api_ref_match = re.search(r"## API Reference\s*\n", new_content)
+            if api_ref_match:
+                # Insert after API Reference heading
+                insert_pos = api_ref_match.end()
+                new_content = (
+                    new_content[:insert_pos] +
+                    "\n" + new_section + "\n\n" +
+                    new_content[insert_pos:]
+                )
+            else:
+                # Append at end
+                new_content += "\n" + new_section + "\n\n"
+
+            print(f"    Added new section for {entity_name}")
 
     # Write back
     doc_path.write_text(new_content, encoding="utf-8")
