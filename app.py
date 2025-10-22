@@ -49,5 +49,57 @@ def cleanup_old_snapshots():
                 if file_age > 3600:  # older than 1 hour
                     os.remove(filepath)
 
+def get_emotion_summary(emotion_data):
+    """
+    Analyze emotion data and return a summary with dominant emotions.
+    
+    This function processes emotion detection results and identifies
+    the primary and secondary emotions detected in the user's facial expression.
+    """
+    if not emotion_data or not isinstance(emotion_data, dict):
+        return {"primary": "neutral", "secondary": None, "confidence": 0.0}
+    
+    # Sort emotions by confidence score
+    sorted_emotions = sorted(emotion_data.items(), key=lambda x: x[1], reverse=True)
+    
+    primary = sorted_emotions[0][0] if sorted_emotions else "neutral"
+    secondary = sorted_emotions[1][0] if len(sorted_emotions) > 1 else None
+    confidence = sorted_emotions[0][1] if sorted_emotions else 0.0
+    
+    return {
+        "primary": primary,
+        "secondary": secondary,
+        "confidence": confidence,
+        "all_emotions": dict(sorted_emotions)
+    }
+
+def filter_playlist_by_mood(songs, mood_category):
+    """
+    Filter and rank songs based on the detected mood category.
+    
+    Takes a list of songs and a mood category (e.g., 'happy', 'sad', 'energetic')
+    and returns songs that best match the mood, sorted by relevance.
+    """
+    mood_mappings = {
+        "happy": ["joy", "excitement", "contentment"],
+        "sad": ["sadness", "melancholy", "longing"],
+        "energetic": ["excitement", "anticipation", "joy"],
+        "calm": ["serenity", "peace", "contentment"],
+        "angry": ["anger", "frustration", "intensity"]
+    }
+    
+    if mood_category not in mood_mappings:
+        return songs
+    
+    # Filter songs that match the mood
+    filtered_songs = []
+    target_emotions = mood_mappings[mood_category]
+    
+    for song in songs:
+        if hasattr(song, 'mood') and song.mood in target_emotions:
+            filtered_songs.append(song)
+    
+    return filtered_songs if filtered_songs else songs
+
 if __name__ == '__main__':
     app.run(debug=True)
