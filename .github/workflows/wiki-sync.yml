@@ -1,17 +1,37 @@
 name: Sync docs to Wiki
+
 on:
   push:
-    branches: [ main ]
+    branches: ['**']          # any branch
     paths:
       - 'docs/**'
+      - '.github/workflows/wiki-sync.yml'
+  workflow_dispatch: {}        # let you run it manually from Actions tab
+
+permissions:
+  contents: write              # needed to push to the wiki repo
+
 jobs:
   sync-wiki:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Clone Wiki repo
-        run: git clone https://github.com/${{ github.repository }}.wiki.git wiki
+      - name: Show debug info
+        run: |
+          echo "Ref: $GITHUB_REF"
+          echo "Default branch: ${{ github.event.repository.default_branch }}"
+          echo "Wiki enabled: ${{ github.event.repository.has_wiki }}"
+
+      - name: Clone Wiki repo (will fail if wiki not initialized)
+        run: |
+          set -e
+          if ! git clone "https://github.com/${{ github.repository }}.wiki.git" wiki; then
+            echo "Wiki repo does not exist yet. Go to the repo’s Wiki tab and click 'Create the first page' once, then re-run this job."
+            exit 1
+          fi
 
       - name: Sync docs folder to wiki
         run: |
@@ -20,5 +40,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Sync docs from main repo" || echo "No changes"
+          git commit -m "Sync docs from repo docs/" || echo "No changes"
           git push
