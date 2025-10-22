@@ -367,7 +367,7 @@ def format_pr_comment(
     lines.append("### Next Steps")
     lines.append("")
 
-    if analysis and analysis.get("code_files"):
+    if analysis and analysis.changed_files:
         lines.append("1. **Review** the changed code files above")
         lines.append("2. **Update** corresponding documentation")
         lines.append("3. **Test** that examples in docs still work")
