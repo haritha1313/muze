@@ -27,10 +27,11 @@ from typing import Dict, List, Optional, Tuple
 import requests
 import textwrap
 
-# Import Hot-Path components (these will be copied to target repo)
+# Import Hot-Path components
+sys.path.insert(0, str(Path(__file__).parent))
 try:
-    from doc_analyzer import DocumentationAnalyzer, Priority
-    from llm_doc_generator import LLMDocGenerator
+    from hotpath_integration import HotPathAnalyzer, HotPathAnalysis, FileChange
+    from hotpath.llm_doc_generator import LLMDocGenerator
     HAS_HOTPATH = True
 except ImportError:
     HAS_HOTPATH = False
@@ -88,51 +89,62 @@ def get_file_content(filepath: str, ref: str) -> str:
 
 
 # ---- Hot-Path Analysis ----
-def run_hotpath_analysis() -> Optional[Dict]:
+def run_hotpath_analysis() -> Optional[HotPathAnalysis]:
     """
-    Run Hot-Path analysis on local git repository.
+    Run Hot-Path analysis on local git repository using real algorithms.
 
-    This adapts DocumentationAnalyzer to work with local git history
-    instead of GitHub API calls.
+    Uses all 5 layers:
+    - Layer 1: Merkle Tree (file changes)
+    - Layer 2: Semantic Analysis (change classification)
+    - Layer 3: Communities (code relationships)
+    - Layer 4: Cross-References (code-to-docs mapping)
+    - Layer 5: Similarity (code patterns)
 
     Returns:
-        Dict with analysis results, or None if Hot-Path unavailable
+        HotPathAnalysis with comprehensive results, or None if Hot-Path unavailable
     """
     if not HAS_HOTPATH:
         return None
 
-    print("[Hot-Path] Analyzing code changes...")
+    print("[Hot-Path] Running full algorithmic analysis...")
+    print(f"[Hot-Path] Base: {BASE_SHA[:8]} -> Head: {HEAD_SHA[:8]}")
 
-    # For local analysis, we need to work with the git repo directly
-    # rather than GitHub API. We'll use a simplified approach:
+    try:
+        # Initialize analyzer with current repo
+        analyzer = HotPathAnalyzer(repo_path=Path.cwd(), verbose=True)
 
-    changed_files = get_changed_files()
+        # Run complete analysis with all layers
+        analysis = analyzer.analyze_changes(
+            base_ref=BASE_SHA,
+            head_ref=HEAD_SHA,
+            include_communities=True,
+            include_similarity=False  # Disabled for performance
+        )
 
-    # Basic analysis without full Hot-Path pipeline
-    # (Full pipeline requires GitHub API; here we do minimal local analysis)
+        print(f"[Hot-Path] Analysis complete!")
+        print(f"[Hot-Path] Found {len(analysis.changed_files)} files changed")
+        print(f"[Hot-Path] - High priority (MAJOR/REWRITE): {len(analysis.get_high_priority_changes())}")
+        print(f"[Hot-Path] - Medium priority (MINOR): {len(analysis.get_medium_priority_changes())}")
+        print(f"[Hot-Path] - Code entities: {analysis.total_entities} total, {analysis.documented_entities} documented")
 
-    results = {
-        "changed_files": changed_files,
-        "code_files": [f for f in changed_files if f.endswith(('.py', '.js', '.ts'))],
-        "doc_files": [f for f in changed_files if f.startswith(DOCS_DIR + '/') or f.endswith(('.md', '.rst', '.txt'))],
-        "needs_analysis": True,
-        "excluded_note": f"Excluded paths: {', '.join(EXCLUDED_PATHS)}"
-    }
+        return analysis
 
-    print(f"[Hot-Path] Found {len(results['code_files'])} code files changed")
-
-    return results
+    except Exception as e:
+        print(f"[Hot-Path] Error during analysis: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
 
 
 def generate_llm_suggestions(
-    changed_files: List[str],
+    file_changes: List[FileChange],
     limit: int = 3
 ) -> List[Dict]:
     """
     Generate LLM documentation suggestions for changed files.
 
     Args:
-        changed_files: List of changed file paths
+        file_changes: List of FileChange objects from Hot-Path analysis
         limit: Maximum number of suggestions to generate
 
     Returns:
@@ -159,7 +171,12 @@ def generate_llm_suggestions(
 
     suggestions = []
 
-    for filepath in changed_files[:limit]:  # Limit to avoid high costs
+    # Prioritize high-priority changes (MAJOR/REWRITE)
+    prioritized = sorted(file_changes, key=lambda fc: fc.priority_score(), reverse=True)
+
+    for file_change in prioritized[:limit]:  # Limit to avoid high costs
+        filepath = file_change.path
+
         # Get old and new versions
         old_code = get_file_content(filepath, BASE_SHA)
         new_code = get_file_content(filepath, HEAD_SHA)
@@ -167,40 +184,32 @@ def generate_llm_suggestions(
         if not new_code:
             continue
 
-        # Determine change type (simplified)
-        if not old_code:
-            change_type = "major"  # New file
-        elif len(new_code) > len(old_code) * 1.5:
-            change_type = "major"
-        elif len(new_code) < len(old_code) * 0.5:
-            change_type = "major"
-        else:
-            change_type = "minor"
-
         # Extract entity name from file path
         entity_name = Path(filepath).stem
 
-        # Generate suggestion
+        # Generate suggestion using Hot-Path change classification
         try:
             suggestion = generator.generate_doc_update(
                 old_code=old_code[:2000],  # Truncate for cost
                 new_code=new_code[:2000],
                 current_doc=f"Documentation for {entity_name}",
-                change_type=change_type,
+                change_type=file_change.change_type,  # Use real semantic classification
                 entity_name=entity_name,
                 context={
                     "mentions": 1,
-                    "distance": 0.5,
-                    "file": filepath
+                    "distance": file_change.normalized_distance,  # Use real tree edit distance
+                    "file": filepath,
+                    "new_code": new_code  # Pass full code for fallback
                 },
                 filename=filepath,
-                language="python" if filepath.endswith('.py') else "javascript"
+                language=file_change.language or ("python" if filepath.endswith('.py') else "javascript")
             )
 
             suggestions.append({
                 "file": filepath,
                 "entity": entity_name,
-                "change_type": change_type,
+                "change_type": file_change.change_type,
+                "distance": file_change.normalized_distance,
                 "suggestion": suggestion.updated_doc[:500],  # Truncate
                 "explanation": suggestion.explanation,
                 "confidence": suggestion.confidence,
@@ -218,14 +227,14 @@ def generate_llm_suggestions(
 
 # ---- Comment Formatting ----
 def format_pr_comment(
-    analysis: Optional[Dict],
+    analysis: Optional[HotPathAnalysis],
     suggestions: List[Dict]
 ) -> str:
     """
     Format PR comment with Hot-Path analysis and LLM suggestions.
 
     Args:
-        analysis: Hot-Path analysis results
+        analysis: HotPathAnalysis with comprehensive semantic results
         suggestions: LLM-generated suggestions
 
     Returns:
@@ -237,52 +246,85 @@ def format_pr_comment(
     marker = f"<!-- HOT-PATH-BOT:PR:{PR_NUMBER} -->"
     lines.append(marker)
     lines.append("")
-    lines.append("## 🔥 Hot-Path Documentation Analysis")
+    lines.append("## Hot-Path Documentation Analysis")
     lines.append("")
-    lines.append("Powered by **Hot-Path** - AI-driven documentation impact analysis")
+    lines.append("Powered by **Hot-Path** - 5-layer semantic documentation impact analysis")
     lines.append("")
 
-    # Summary
+    # Summary with real semantic data
     if analysis:
-        code_files = analysis.get("code_files", [])
-        doc_files = analysis.get("doc_files", [])
+        high_priority = analysis.get_high_priority_changes()
+        medium_priority = analysis.get_medium_priority_changes()
 
-        lines.append("### 📊 Summary")
+        lines.append("### Semantic Analysis Summary")
         lines.append("")
-        lines.append(f"- **{len(code_files)} code files** changed")
-        lines.append(f"- **{len(doc_files)} doc files** changed")
-
-        if code_files and not doc_files:
-            lines.append("")
-            lines.append("⚠️ **Code changed but no docs updated** - consider updating documentation")
-
-        lines.append("")
-        lines.append("### 📝 Changed Code Files")
+        lines.append(f"- **{len(analysis.changed_files)} files** analyzed in {analysis.elapsed_seconds:.1f}s")
+        lines.append(f"- **{analysis.files_added} added**, **{analysis.files_deleted} deleted**")
         lines.append("")
 
-        if code_files:
-            for f in code_files[:10]:  # Limit display
-                lines.append(f"- `{f}`")
+        lines.append("**Change Classification** (using Zhang-Shasha tree edit distance):")
+        for change_type, count in sorted(analysis.changes_by_type.items()):
+            if count > 0:
+                lines.append(f"- **{change_type.upper()}**: {count} files")
+        lines.append("")
 
-            if len(code_files) > 10:
-                lines.append(f"- ... and {len(code_files) - 10} more")
-        else:
-            lines.append("*No product code files changed (excluded bot infrastructure)*")
+        lines.append("**Documentation Impact:**")
+        lines.append(f"- **HIGH priority** (MAJOR/REWRITE): {len(high_priority)} files need docs")
+        lines.append(f"- **MEDIUM priority** (MINOR): {len(medium_priority)} files")
+        lines.append("")
 
-        if analysis.get("excluded_note"):
+        lines.append("**Code Entities:**")
+        lines.append(f"- Total entities found: {analysis.total_entities}")
+        lines.append(f"- Documented: {analysis.documented_entities}")
+        lines.append(f"- Undocumented: {analysis.undocumented_entities}")
+
+        if analysis.communities_found:
+            lines.append(f"- Code communities detected: {analysis.communities_found}")
+
+        lines.append("")
+
+        # High priority changes details
+        if high_priority:
+            lines.append("### High Priority Changes (Require Documentation)")
             lines.append("")
-            lines.append(f"<sub>ℹ️ {analysis['excluded_note']}</sub>")
-        else:
-            lines.append("### ℹ️ Basic Analysis")
-            lines.append("")
-            lines.append("Hot-Path components not fully configured.")
-            lines.append("Enable full analysis by setting up GitHub API access.")
+            for fc in high_priority[:5]:  # Show top 5
+                lines.append(f"#### `{fc.path}`")
+                lines.append(f"- **Change Type:** {fc.change_type.upper()}")
+                lines.append(f"- **Tree Edit Distance:** {fc.normalized_distance:.2f}")
+                lines.append(f"- **Language:** {fc.language or 'unknown'}")
 
-    lines.append("")
+                # Show impacted docs if available
+                impacted = analysis.get_impacted_docs(fc.path)
+                if impacted:
+                    lines.append(f"- **Impacted Docs:** {', '.join(f'`{d}`' for d in impacted[:3])}")
+                lines.append("")
+
+            if len(high_priority) > 5:
+                lines.append(f"*... and {len(high_priority) - 5} more high priority changes*")
+                lines.append("")
+
+        # Medium priority changes summary
+        if medium_priority:
+            lines.append("<details>")
+            lines.append("<summary>Medium Priority Changes (Consider Documentation)</summary>")
+            lines.append("")
+            for fc in medium_priority[:10]:
+                lines.append(f"- `{fc.path}` - {fc.change_type.upper()} (distance: {fc.normalized_distance:.2f})")
+            if len(medium_priority) > 10:
+                lines.append(f"- ... and {len(medium_priority) - 10} more")
+            lines.append("")
+            lines.append("</details>")
+            lines.append("")
+    else:
+        lines.append("### Analysis Unavailable")
+        lines.append("")
+        lines.append("Hot-Path components not fully configured.")
+        lines.append("Check the workflow logs for details.")
+        lines.append("")
 
     # LLM Suggestions
     if suggestions:
-        lines.append("### 🤖 AI-Generated Documentation Suggestions")
+        lines.append("### AI-Generated Documentation Suggestions")
         lines.append("")
         lines.append("The following suggestions were generated using LLM analysis:")
         lines.append("")
@@ -310,7 +352,7 @@ def format_pr_comment(
         lines.append(f"*Cost for this analysis: ${total_cost:.4f}*")
         lines.append("")
     elif ENABLE_LLM:
-        lines.append("### 🤖 LLM Suggestions")
+        lines.append("### LLM Suggestions")
         lines.append("")
         lines.append("LLM suggestions enabled but no suggestions generated.")
         lines.append("This could be due to:")
@@ -322,7 +364,7 @@ def format_pr_comment(
     # Actions
     lines.append("---")
     lines.append("")
-    lines.append("### 💡 Next Steps")
+    lines.append("### Next Steps")
     lines.append("")
 
     if analysis and analysis.get("code_files"):
@@ -337,7 +379,7 @@ def format_pr_comment(
 
     # Add /update-docs command if LLM enabled
     if ENABLE_LLM and (OPENAI_API_KEY or ANTHROPIC_API_KEY):
-        lines.append("### 🤖 Automatic Documentation Updates")
+        lines.append("### Automatic Documentation Updates")
         lines.append("")
         lines.append("Comment **`/update-docs`** on this PR to automatically:")
         lines.append("- Generate high-quality documentation using LLM")
@@ -348,8 +390,8 @@ def format_pr_comment(
     lines.append("---")
     lines.append("")
     lines.append("<sub>")
-    lines.append("🔥 Powered by [Hot-Path](https://github.com/anthropics/hot-path) | ")
-    lines.append("⚙️ [Configure](.github/workflows/doc-analysis.yml)")
+    lines.append("Powered by [Hot-Path](https://github.com/anthropics/hot-path) | ")
+    lines.append("[Configure](.github/workflows/doc-analysis.yml)")
     lines.append("</sub>")
 
     return "\n".join(lines)
@@ -372,9 +414,9 @@ def post_pr_comment(message: str):
     response = requests.post(url, headers=headers, json={"body": message})
 
     if response.status_code == 201:
-        print(f"✓ Posted comment to PR #{PR_NUMBER}")
+        print(f"Posted comment to PR #{PR_NUMBER}")
     else:
-        print(f"✗ Failed to post comment: {response.status_code}")
+        print(f"Failed to post comment: {response.status_code}")
         print(response.text)
 
 
@@ -415,9 +457,9 @@ def update_existing_comment(message: str):
         response = requests.patch(update_url, headers=headers, json={"body": message})
 
         if response.status_code == 200:
-            print(f"✓ Updated existing comment on PR #{PR_NUMBER}")
+            print(f"Updated existing comment on PR #{PR_NUMBER}")
         else:
-            print(f"✗ Failed to update comment: {response.status_code}")
+            print(f"Failed to update comment: {response.status_code}")
     else:
         # Create new comment
         post_pr_comment(message)
@@ -455,11 +497,15 @@ def main():
 
     # Generate LLM suggestions if enabled
     suggestions = []
-    if analysis and analysis.get("code_files"):
-        suggestions = generate_llm_suggestions(
-            analysis["code_files"],
-            limit=3  # Limit to 3 for cost control
-        )
+    if analysis and analysis.changed_files:
+        # Filter to files that need documentation updates
+        files_needing_docs = [fc for fc in analysis.changed_files if fc.needs_doc_update]
+
+        if files_needing_docs:
+            suggestions = generate_llm_suggestions(
+                files_needing_docs,
+                limit=3  # Limit to 3 for cost control
+            )
 
     # Format comment
     comment = format_pr_comment(analysis, suggestions)
@@ -468,17 +514,31 @@ def main():
     update_existing_comment(comment)
 
     # Save results to file for debugging
-    results = {
-        "analysis": analysis,
-        "suggestions": [
-            {k: v for k, v in s.items() if k != "suggestion"}  # Exclude large text
-            for s in suggestions
-        ]
-    }
+    if analysis:
+        results = {
+            "summary": {
+                "total_files": len(analysis.changed_files),
+                "files_added": analysis.files_added,
+                "files_deleted": analysis.files_deleted,
+                "high_priority": len(analysis.get_high_priority_changes()),
+                "medium_priority": len(analysis.get_medium_priority_changes()),
+                "documented_entities": analysis.documented_entities,
+                "undocumented_entities": analysis.undocumented_entities,
+                "elapsed_seconds": analysis.elapsed_seconds
+            },
+            "changes_by_type": analysis.changes_by_type,
+            "high_priority_files": [fc.path for fc in analysis.get_high_priority_changes()],
+            "suggestions": [
+                {k: v for k, v in s.items() if k != "suggestion"}  # Exclude large text
+                for s in suggestions
+            ]
+        }
+    else:
+        results = {"error": "Analysis unavailable"}
 
     output_file = Path("hot-path-results.json")
     output_file.write_text(json.dumps(results, indent=2))
-    print(f"\n✓ Results saved to {output_file}")
+    print(f"\nResults saved to {output_file}")
 
     print("\n" + "=" * 80)
     print("Analysis complete!")

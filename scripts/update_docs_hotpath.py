@@ -26,8 +26,9 @@ import requests
 import re
 
 # Import Hot-Path components
-sys.path.insert(0, str(Path(__file__).parent / "hotpath"))
-from llm_doc_generator import LLMDocGenerator
+sys.path.insert(0, str(Path(__file__).parent))
+from hotpath_integration import HotPathAnalyzer, HotPathAnalysis, FileChange
+from hotpath.llm_doc_generator import LLMDocGenerator
 
 
 # ---- Environment ----
@@ -38,8 +39,27 @@ HEAD_SHA = os.getenv("HEAD_SHA", "")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-DOCS_DIR = os.getenv("DOCS_DIR", "docs")
-DOCS_EXTRAS = [p.strip() for p in os.getenv("DOCS_EXTRAS", "README.md").split(",") if p.strip()]
+
+# Find repository root (where .git directory is)
+def find_repo_root() -> Path:
+    """Find the repository root by looking for .git directory"""
+    current = Path.cwd().resolve()
+    while current != current.parent:
+        if (current / ".git").exists():
+            return current
+        current = current.parent
+    # Fallback: assume we're in scripts/ and go up one level
+    script_dir = Path(__file__).parent.resolve()
+    if script_dir.name == "scripts":
+        return script_dir.parent
+    return Path.cwd()
+
+REPO_ROOT = find_repo_root()
+DOCS_DIR_REL = os.getenv("DOCS_DIR", "docs")  # Relative path from repo root
+DOCS_DIR = str(REPO_ROOT / DOCS_DIR_REL)  # Absolute path to docs directory
+
+DOCS_EXTRAS_REL = [p.strip() for p in os.getenv("DOCS_EXTRAS", "README.md").split(",") if p.strip()]
+DOCS_EXTRAS = [str(REPO_ROOT / p) for p in DOCS_EXTRAS_REL]  # Absolute paths
 
 CODE_EXTS = {".py", ".js", ".ts"}
 
@@ -114,47 +134,70 @@ def extract_functions_from_code(code: str) -> Set[str]:
     return functions
 
 
-def analyze_code_changes() -> List[Dict]:
+def analyze_code_changes() -> Tuple[HotPathAnalysis, List[Dict]]:
     """
-    Analyze code changes and determine what needs documentation.
+    Analyze code changes using Hot-Path semantic analysis.
 
     Returns:
-        List of dicts with: file, entity, old_code, new_code, change_type
+        Tuple of (HotPathAnalysis, List of entity-level changes for doc generation)
     """
-    changed_files = get_changed_files()
-    code_files = [f for f in changed_files if is_code_file(f)]
+    print("[Hot-Path] Running semantic analysis...")
 
+    # Run Hot-Path analysis
+    analyzer = HotPathAnalyzer(repo_path=REPO_ROOT, verbose=True)
+    analysis = analyzer.analyze_changes(
+        base_ref=BASE_SHA,
+        head_ref=HEAD_SHA,
+        include_communities=True,
+        include_similarity=False
+    )
+
+    print(f"[Hot-Path] Analysis complete in {analysis.elapsed_seconds:.1f}s")
+    print(f"[Hot-Path] Found {len(analysis.changed_files)} files changed")
+
+    # Extract entity-level changes for documentation generation
     changes = []
 
-    for filepath in code_files:
+    # Focus on high and medium priority changes
+    priority_files = analysis.get_high_priority_changes() + analysis.get_medium_priority_changes()
+
+    for file_change in priority_files:
+        filepath = file_change.path
+
+        # Skip if not a code file
+        if not is_code_file(filepath):
+            continue
+
         old_code = get_file_content(filepath, BASE_SHA)
         new_code = get_file_content(filepath, HEAD_SHA)
 
         if not new_code:  # File deleted
             continue
 
+        # Extract functions from code
         old_funcs = extract_functions_from_code(old_code)
         new_funcs = extract_functions_from_code(new_code)
 
         # New functions
         added = new_funcs - old_funcs
 
-        # Modified functions (heuristic: if code changed significantly)
+        # Modified functions (for files that changed)
         modified = set()
-        if old_code and new_code:
-            if len(new_code) != len(old_code):  # Simple change detection
-                # Functions that exist in both but file changed
-                modified = old_funcs & new_funcs
+        if old_code and new_code and file_change.change_type not in ["identical", "refactor"]:
+            # Functions that exist in both but file changed significantly
+            modified = old_funcs & new_funcs
 
-        # Determine change types
+        # Add entity-level changes using semantic classification from Hot-Path
         for func in added:
             changes.append({
                 "file": filepath,
                 "entity": func,
                 "old_code": "",
                 "new_code": extract_function_code(new_code, func),
-                "change_type": "major",  # New function is major
-                "reason": "added"
+                "change_type": file_change.change_type,  # Use Hot-Path classification
+                "reason": "added",
+                "distance": file_change.normalized_distance,
+                "language": file_change.language
             })
 
         for func in modified:
@@ -163,11 +206,13 @@ def analyze_code_changes() -> List[Dict]:
                 "entity": func,
                 "old_code": extract_function_code(old_code, func),
                 "new_code": extract_function_code(new_code, func),
-                "change_type": "minor",  # Modified is minor (could be major)
-                "reason": "modified"
+                "change_type": file_change.change_type,  # Use Hot-Path classification
+                "reason": "modified",
+                "distance": file_change.normalized_distance,
+                "language": file_change.language
             })
 
-    return changes
+    return analysis, changes
 
 
 def extract_function_code(code: str, func_name: str) -> str:
@@ -192,26 +237,28 @@ def extract_function_code(code: str, func_name: str) -> str:
 
 # ---- Documentation Loading ----
 def load_current_docs() -> Dict[str, str]:
-    """Load current documentation files"""
+    """Load current documentation files from repo root"""
     docs = {}
 
-    # Load extra docs (README, etc)
-    for extra in DOCS_EXTRAS:
-        p = Path(extra)
+    # Load extra docs (README, etc) - DOCS_EXTRAS already has absolute paths
+    for extra_path in DOCS_EXTRAS:
+        p = Path(extra_path)
         if p.exists() and p.is_file():
             try:
                 docs[str(p)] = p.read_text(encoding="utf-8", errors="ignore")
             except:
                 pass
 
-    # Load docs directory
+    # Load docs directory - DOCS_DIR is already absolute path
     docs_path = Path(DOCS_DIR)
-    if docs_path.exists():
+    if docs_path.exists() and docs_path.is_dir():
         for md_file in list(docs_path.rglob("*.md")) + list(docs_path.rglob("*.mdx")):
             try:
                 docs[str(md_file)] = md_file.read_text(encoding="utf-8", errors="ignore")
             except:
                 pass
+    else:
+        print(f"Warning: Documentation directory does not exist: {docs_path}")
 
     return docs
 
@@ -226,10 +273,10 @@ def is_entity_documented(entity: str, docs: Dict[str, str]) -> bool:
 
 
 def find_best_doc_file(filepath: str) -> str:
-    """Determine best documentation file for code file (always in docs/)"""
+    """Determine best documentation file for code file (always in docs/ at repo root)"""
     module = Path(filepath).stem
 
-    # Try docs/<module>.md
+    # Try docs/<module>.md (DOCS_DIR is already absolute path to repo_root/docs)
     prefer = Path(DOCS_DIR) / f"{module}.md"
     if prefer.exists():
         return str(prefer)
@@ -239,7 +286,7 @@ def find_best_doc_file(filepath: str) -> str:
     if api_ref.exists():
         return str(api_ref)
 
-    # Create new doc file in docs/
+    # Create new doc file in docs/ (at repo root)
     return str(prefer)
 
 
@@ -295,24 +342,34 @@ def generate_llm_documentation(changes: List[Dict]) -> Dict[str, List[Dict]]:
         # Get current doc content for context
         current_doc_content = current_docs.get(target_doc, f"# {Path(target_doc).stem} API Reference\n\n")
 
-        # Generate documentation
+        # Generate documentation using Hot-Path enhanced context
         try:
             suggestion = generator.generate_doc_update(
                 old_code=change['old_code'],
                 new_code=change['new_code'],
                 current_doc=current_doc_content,
-                change_type=change['change_type'],
+                change_type=change['change_type'],  # From Hot-Path semantic analysis
                 entity_name=change['entity'],
                 context={
                     "mentions": 0,
                     "file": change['file'],
-                    "reason": change['reason']
+                    "reason": change['reason'],
+                    "distance": change.get('distance', 0.5),  # Hot-Path tree edit distance
+                    "new_code": change['new_code']  # Pass code for fallback
                 },
                 filename=change['file'],
-                language="python"
+                language=change.get('language') or "python"  # From Hot-Path language detection
             )
 
-            print(f"✓ (confidence: {suggestion.confidence:.0%}, cost: ${suggestion.cost_usd:.4f})")
+            print(f"OK (confidence: {suggestion.confidence:.0%}, cost: ${suggestion.cost_usd:.4f})")
+
+            # Only use suggestions with reasonable confidence
+            MIN_CONFIDENCE = 0.3  # 30% minimum confidence threshold
+
+            if suggestion.confidence < MIN_CONFIDENCE:
+                print(f"   Skipping due to low confidence ({suggestion.confidence:.0%} < {MIN_CONFIDENCE:.0%})")
+                print(f"   Reason: {suggestion.explanation}")
+                continue
 
             # Store generated content
             if target_doc not in grouped:
@@ -327,7 +384,7 @@ def generate_llm_documentation(changes: List[Dict]) -> Dict[str, List[Dict]]:
             })
 
         except Exception as e:
-            print(f"✗ Error: {e}")
+            print(f"Error: {e}")
 
     return grouped
 
@@ -360,7 +417,7 @@ def append_documentation(doc_file: str, sections: List[Dict]):
 
     # Write back
     doc_path.write_text(new_content, encoding="utf-8")
-    print(f"  ✓ Updated {doc_file}")
+    print(f"  Updated {doc_file}")
 
 
 # ---- GitHub Integration ----
@@ -403,15 +460,15 @@ def update_bot_comment(commit_sha: str, stats: Dict):
 
 ---
 
-### ✅ Documentation Updated!
+### Documentation Updated!
 
 **Commit:** `{commit_sha}`
 
 **Statistics:**
-- 📝 {sections_added} documentation sections generated
-- 📄 {files_updated} files updated
-- 💰 Cost: ${total_cost:.4f}
-- 🤖 Generated using {stats.get('provider', 'LLM')}
+- {sections_added} documentation sections generated
+- {files_updated} files updated
+- Cost: ${total_cost:.4f}
+- Generated using {stats.get('provider', 'LLM')}
 
 The documentation has been automatically updated based on your code changes.
 Review the commit and adjust as needed.
@@ -422,7 +479,7 @@ Review the commit and adjust as needed.
     update_url = f"https://api.github.com/repos/{REPO}/issues/comments/{target_comment['id']}"
     requests.patch(update_url, headers=headers, json={"body": new_body})
 
-    print(f"\n✓ Updated PR comment")
+    print(f"\nUpdated PR comment")
 
 
 # ---- Main ----
@@ -433,7 +490,7 @@ def main():
 
     # Validate environment
     if not (OPENAI_API_KEY or ANTHROPIC_API_KEY):
-        print("\n❌ ERROR: No LLM API key configured!")
+        print("\nERROR: No LLM API key configured!")
         print("\nPaid mode requires an API key:")
         print("  - Set OPENAI_API_KEY for OpenAI (recommended)")
         print("  - Set ANTHROPIC_API_KEY for Anthropic Claude")
@@ -441,29 +498,51 @@ def main():
         sys.exit(1)
 
     if not BASE_SHA or not HEAD_SHA:
-        print("\n❌ ERROR: BASE_SHA and HEAD_SHA must be set")
+        print("\nERROR: BASE_SHA and HEAD_SHA must be set")
         sys.exit(1)
 
     print(f"\nRepository: {REPO}")
     print(f"PR: #{PR_NUMBER}")
     print(f"Comparing: {BASE_SHA[:8]}...{HEAD_SHA[:8]}")
+    print(f"\nPaths:")
+    print(f"  Repo Root: {REPO_ROOT}")
+    print(f"  Docs Directory: {DOCS_DIR}")
+    print(f"  Extra Docs: {', '.join(DOCS_EXTRAS) if DOCS_EXTRAS else 'None'}")
 
     # Analyze changes
     print("\n" + "-" * 80)
-    print("Step 1: Analyzing code changes...")
+    print("Step 1: Analyzing code changes with Hot-Path...")
     print("-" * 80)
 
-    changes = analyze_code_changes()
+    analysis, changes = analyze_code_changes()
+
+    # Display Hot-Path analysis summary
+    print(f"\nHot-Path Analysis Summary:")
+    print(f"  - Files analyzed: {len(analysis.changed_files)}")
+    print(f"  - Analysis time: {analysis.elapsed_seconds:.1f}s")
+    print(f"\n  Change Classification:")
+    for change_type, count in sorted(analysis.changes_by_type.items()):
+        if count > 0:
+            print(f"    - {change_type.upper()}: {count} files")
+    print(f"\n  Documentation Impact:")
+    print(f"    - HIGH priority: {len(analysis.get_high_priority_changes())} files")
+    print(f"    - MEDIUM priority: {len(analysis.get_medium_priority_changes())} files")
+    print(f"\n  Code Entities:")
+    print(f"    - Total: {analysis.total_entities}")
+    print(f"    - Documented: {analysis.documented_entities}")
+    print(f"    - Undocumented: {analysis.undocumented_entities}")
 
     if not changes:
-        print("\n✓ No undocumented code changes found.")
+        print("\nNo undocumented code changes found.")
         print("All functions are either already documented or unchanged.")
         return
 
     print(f"\nFound {len(changes)} functions needing documentation:")
-    for change in changes:
-        print(f"  - {change['file']}::{change['entity']} ({change['reason']})")
-    print(f"\nℹ️  Excluded paths: {', '.join(EXCLUDED_PATHS)}")
+    for change in changes[:10]:  # Show first 10
+        print(f"  - {change['file']}::{change['entity']} ({change['change_type']}, {change['reason']})")
+    if len(changes) > 10:
+        print(f"  ... and {len(changes) - 10} more")
+    print(f"\nExcluded paths: {', '.join(EXCLUDED_PATHS)}")
 
     # Generate documentation
     print("\n" + "-" * 80)
@@ -473,14 +552,15 @@ def main():
     generated = generate_llm_documentation(changes)
 
     if not generated:
-        print("\n✓ All functions are already documented.")
+        print("\nAll functions are already documented.")
         return
 
     print(f"\nGenerated documentation for {sum(len(v) for v in generated.values())} functions")
 
     # Write documentation
     print("\n" + "-" * 80)
-    print(f"Step 3: Writing documentation files to {DOCS_DIR}/...")
+    print(f"Step 3: Writing documentation files...")
+    print(f"  Target directory: {DOCS_DIR}")
     print("-" * 80)
 
     total_cost = 0.0
@@ -498,37 +578,50 @@ def main():
 
     git_config()
 
-    # Stage changes
-    run_git("add", DOCS_DIR)
-    for extra in DOCS_EXTRAS:
-        if Path(extra).exists():
-            run_git("add", extra)
+    # Change to repo root for git operations
+    original_dir = Path.cwd()
+    os.chdir(REPO_ROOT)
 
-    # Create commit
-    commit_msg = f"""docs: AI-generated documentation updates
+    try:
+        # Stage changes (use relative paths from repo root)
+        docs_rel = Path(DOCS_DIR).relative_to(REPO_ROOT)
+        run_git("add", str(docs_rel))
+
+        for extra_abs in DOCS_EXTRAS:
+            extra_path = Path(extra_abs)
+            if extra_path.exists():
+                extra_rel = extra_path.relative_to(REPO_ROOT)
+                run_git("add", str(extra_rel))
+
+        # Create commit
+        commit_msg = f"""docs: AI-generated documentation updates
 
 Generated documentation for {sections_added} functions using Hot-Path LLM.
 
 Files updated:
-{chr(10).join(f'  - {f}' for f in generated.keys())}
+{chr(10).join(f'  - {Path(f).relative_to(REPO_ROOT)}' for f in generated.keys())}
 
-🤖 Generated with Hot-Path + LLM
+Generated with Hot-Path + LLM
 """
 
-    try:
-        run_git("commit", "-m", commit_msg)
-        print("✓ Changes committed")
-    except subprocess.CalledProcessError:
-        print("✓ No changes to commit (docs may already be up to date)")
-        return
+        try:
+            run_git("commit", "-m", commit_msg)
+            print("Changes committed")
+        except subprocess.CalledProcessError:
+            print("No changes to commit (docs may already be up to date)")
+            return
 
-    # Push changes
-    try:
-        run_git("push")
-        print("✓ Changes pushed to PR branch")
-    except subprocess.CalledProcessError as e:
-        print(f"✗ Failed to push: {e}")
-        sys.exit(1)
+        # Push changes
+        try:
+            run_git("push")
+            print("Changes pushed to PR branch")
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to push: {e}")
+            sys.exit(1)
+
+    finally:
+        # Restore original directory
+        os.chdir(original_dir)
 
     # Get commit SHA
     commit_sha = run_git("rev-parse", "--short", "HEAD")
@@ -545,7 +638,7 @@ Files updated:
 
     # Summary
     print("\n" + "=" * 80)
-    print("✅ Documentation Update Complete!")
+    print("Documentation Update Complete!")
     print("=" * 80)
     print(f"\nSummary:")
     print(f"  - Commit: {commit_sha}")

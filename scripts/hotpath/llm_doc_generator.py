@@ -209,7 +209,16 @@ class LLMDocGenerator:
             )
 
         except Exception as e:
-            print(f"Error calling LLM: {e}")
+            import traceback
+            print(f"\nERROR: LLM documentation generation failed for {entity_name}")
+            print(f"   Reason: {str(e)}")
+            print(f"   Provider: {self.provider.value}")
+            print(f"   Model: {self.model}")
+            if context.get('file'):
+                print(f"   File: {context['file']}")
+            print(f"\n   Full traceback:")
+            traceback.print_exc()
+            print()
             return self._fallback_suggestion(
                 current_doc, change_type, entity_name, context
             )
@@ -245,43 +254,54 @@ class LLMDocGenerator:
             line_range = "unknown"
 
         # Build the prompt
-        prompt = f"""You are a technical documentation expert. Your job is to update documentation when code changes. Be precise, clear, and maintain the existing style.
+        prompt = f"""You are a technical documentation expert. Your job is to write clear, comprehensive API documentation based on code.
 
-The function `{entity_name}` in file `{filename or 'unknown'}` has changed.
+TASK: Document the function `{entity_name}` from file `{filename or 'unknown'}`
 
-CHANGE TYPE: {change_type.upper()} (semantic distance: {distance:.2f})
+CHANGE CONTEXT:
+- Change type: {change_type.upper()}
+- Semantic distance: {distance:.2f}
+- Documentation mentions: {mention_count} times
 
-OLD CODE:
+CODE BEING DOCUMENTED:
 ```{language or 'python'}
-{old_code[:1000]}  # Truncated for brevity
+{new_code[:2500]}
 ```
 
-NEW CODE:
+PREVIOUS VERSION (if applicable):
 ```{language or 'python'}
-{new_code[:1000]}  # Truncated for brevity
+{old_code[:1500] if old_code else 'N/A - New function'}
 ```
 
-CURRENT DOCUMENTATION (lines {line_range}):
-```markdown
-{doc_section[:1000]}  # Truncated for brevity
-```
-
-ANALYSIS:
-- Change classification: {change_type.upper()}
-- Mentioned in documentation: {mention_count} times
-- Key changes detected:
+KEY CHANGES DETECTED:
 {self._format_key_changes(key_changes)}
 
-TASK:
-1. Identify what changed in the code that affects the documentation
-2. Generate updated documentation that reflects the new behavior
-3. Maintain the existing writing style and format
-4. Be specific about what changed (e.g., "password length requirement changed from 8 to 10 characters")
+CURRENT DOCUMENTATION:
+```markdown
+{doc_section[:1500]}
+```
 
-Generate ONLY the updated documentation section, not the entire file. Format your response as JSON:
+INSTRUCTIONS:
+1. Write clear, professional documentation for this function
+2. Include:
+   - Brief description of what the function does
+   - Parameters and their types/purposes
+   - Return value and type
+   - Example usage if relevant
+   - Any important notes or warnings
+3. If this is an update, note what changed compared to the previous version
+4. Be specific and accurate - base everything on the actual code
+5. Use markdown formatting
+
+IMPORTANT:
+- Set confidence to 0.8-0.95 for high-quality documentation
+- Set confidence to 0.5-0.7 for uncertain/incomplete documentation
+- Set confidence to 0.2-0.4 only if you cannot generate meaningful docs
+
+Generate your response as JSON:
 {{
-  "updated_doc": "The updated documentation text...",
-  "explanation": "Brief explanation of what changed...",
+  "updated_doc": "## {entity_name}\\n\\nYour complete documentation here...",
+  "explanation": "What this function does and what changed (if applicable)...",
   "confidence": 0.85
 }}
 """
@@ -482,20 +502,98 @@ Generate ONLY the updated documentation section, not the entire file. Format you
         entity_name: str,
         context: Dict
     ) -> DocSuggestion:
-        """Generate a fallback suggestion when LLM is unavailable"""
-        explanation = f"The function {entity_name} has a {change_type.upper()} change. Please review and update documentation manually."
+        """Generate a fallback suggestion when LLM is unavailable - uses code analysis"""
+
+        # Try to generate basic documentation from code structure
+        new_code = context.get("new_code", "")
+        filename = context.get("file", "unknown")
+
+        # Basic documentation template
+        doc_lines = []
+        doc_lines.append(f"### {entity_name}")
+        doc_lines.append("")
+        doc_lines.append(f"*Source: `{filename}`*")
+        doc_lines.append("")
+
+        # Try to extract docstring if available
+        docstring = self._extract_docstring(new_code)
+        if docstring:
+            doc_lines.append(docstring)
+            doc_lines.append("")
+        else:
+            doc_lines.append(f"Function `{entity_name}` - {change_type} change detected.")
+            doc_lines.append("")
+            doc_lines.append("**WARNING: Auto-generated stub** - This documentation was generated without LLM.")
+            doc_lines.append("Please review and add proper documentation manually.")
+            doc_lines.append("")
+
+        # Try to extract function signature
+        signature = self._extract_function_signature(new_code, entity_name)
+        if signature:
+            doc_lines.append("**Signature:**")
+            doc_lines.append(f"```python")
+            doc_lines.append(signature)
+            doc_lines.append("```")
+            doc_lines.append("")
+
+        updated_doc = "\n".join(doc_lines)
+
+        explanation = f"WARNING: LLM unavailable - Generated basic documentation stub from code analysis. The function {entity_name} has a {change_type.upper()} change. Manual review and enhancement required."
 
         return DocSuggestion(
-            updated_doc=current_doc,
-            diff="# No diff available (LLM unavailable)",
+            updated_doc=updated_doc,
+            diff=self._generate_diff(current_doc, updated_doc),
             explanation=explanation,
-            confidence=0.0,
+            confidence=0.1,  # Very low confidence for stubs
             provider="fallback",
-            model="none",
+            model="code-analysis",
             tokens_used=0,
             cost_usd=0.0,
             generation_time=0.0
         )
+
+    def _extract_docstring(self, code: str) -> Optional[str]:
+        """Extract docstring from Python code"""
+        try:
+            import ast
+            tree = ast.parse(code)
+            for node in ast.walk(tree):
+                if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                    docstring = ast.get_docstring(node)
+                    if docstring:
+                        return docstring
+        except:
+            pass
+        return None
+
+    def _extract_function_signature(self, code: str, func_name: str) -> Optional[str]:
+        """Extract function signature from code"""
+        try:
+            import ast
+            tree = ast.parse(code)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef) and node.name == func_name:
+                    # Get the function definition line
+                    lines = code.split('\n')
+                    if node.lineno <= len(lines):
+                        # Find the complete function signature (may span multiple lines)
+                        sig_lines = []
+                        for i in range(node.lineno - 1, min(node.lineno + 5, len(lines))):
+                            sig_lines.append(lines[i])
+                            if ':' in lines[i]:
+                                break
+                        return '\n'.join(sig_lines)
+        except:
+            pass
+
+        # Fallback: regex search
+        import re
+        pattern = rf"def\s+{re.escape(func_name)}\s*\([^)]*\)"
+        match = re.search(pattern, code)
+        if match:
+            return match.group(0)
+
+        return None
 
     def generate_batch(
         self,
