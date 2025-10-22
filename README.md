@@ -36,3 +36,22 @@ def get_emotion():
 
 ## Data credits
 - http://www.music-ir.org/mirex/wiki/2007:Audio_Music_Mood_Classification
+
+
+## API Reference
+
+## get_last_emotion
+
+Brief description.
+
+**Parameters:**
+- ...
+
+**Returns:**
+- ...
+
+**Example:**
+```python
+from algorithmia import get_last_emotion
+# get_last_emotion(...)
+```

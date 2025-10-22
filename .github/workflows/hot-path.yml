@@ -1,0 +1,132 @@
+name: Hot-Path Doc Analysis (Paid Mode)
+
+# This workflow is configured for PAID MODE with LLM suggestions
+# Includes the /update-docs command for automatic doc generation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Job 1: Analyze PR and post suggestions
+  analyze:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full git history
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests openai anthropic
+
+      - name: Run Hot-Path Analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
+          # PAID MODE: LLM enabled
+          ENABLE_LLM: 'true'
+
+          # API Keys (add to GitHub Secrets)
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Alternative: ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          cd scripts/hotpath
+          export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+          cd ..
+          python pr_bot.py
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hot-path-results
+          path: hot-path-results.json
+
+  # Job 2: Auto-update docs when /update-docs command is used
+  update-docs:
+    if: >
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/update-docs')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR details
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('ref', pr.data.head.ref);
+            core.setOutput('sha', pr.data.head.sha);
+            core.setOutput('base_sha', pr.data.base.sha);
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          repository: ${{ github.repository }}
+          ref: ${{ steps.pr.outputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests openai anthropic
+
+      - name: Generate and commit documentation
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          BASE_SHA: ${{ steps.pr.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.pr.outputs.sha }}
+
+          # PAID MODE: LLM required
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Alternative: ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # Documentation configuration
+          DOCS_DIR: docs
+          DOCS_EXTRAS: README.md
+        run: |
+          cd scripts/hotpath
+          export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+          cd ..
+          python update_docs_hotpath.py
+
+      - name: Comment on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ Documentation update failed. Check the [workflow logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\nCommon issues:\n- API key not configured\n- No changes requiring documentation\n- Git push permissions'
+            })
