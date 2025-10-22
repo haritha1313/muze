@@ -219,8 +219,9 @@ class HotPathAnalyzer:
             refs_by_doc = crossref_result.get("cross_reference_details", {}).get("references_by_doc", {})
 
             for entity, doc_list in entity_to_docs.items():
+                # refs_by_doc already contains counts (integers), not lists
                 mention_count = sum(
-                    len(refs_by_doc.get(doc, {}).get(entity, []))
+                    refs_by_doc.get(doc, {}).get(entity, 0)
                     for doc in doc_list
                 )
                 entity_references[entity] = EntityReference(
