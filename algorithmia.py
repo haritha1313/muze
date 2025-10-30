@@ -17,8 +17,6 @@ def get_emotion():
     client = Algorithmia.client('api-key')
     algo = client.algo('deeplearning/EmotionRecognitionCNNMBP/1.0.1')
     op = (algo.pipe(input).result)["results"]
-
-    # Returned from API call
     
     if(op==[]):
         current = "Neutral"
