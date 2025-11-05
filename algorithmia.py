@@ -16,110 +16,44 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Global emotion history storage
-emot_list = list()
+def get_emotion():
+    print("Getting emotion...")
+    # API call
+    input = bytearray(open("snapshots/pic.png", "rb").read())
+    client = Algorithmia.client('api-key')
+    algo = client.algo('deeplearning/EmotionRecognitionCNNMBP/1.0.1')
+    op = (algo.pipe(input).result)["results"]
+    
+    if(op==[]):
+        current = "Neutral"
+    else:
+        emotion = ((op[0])["emotions"])
+        analyze = dict()
 
-class EmotionType(Enum):
-    """Enumeration of supported emotion types"""
-    ANGRY = "Angry"
-    NEUTRAL = "Neutral"
-    HAPPY = "Happy"
-    SAD = "Sad"
-    SURPRISE = "Surprise"
-    DISGUST = "Disgust"
-    FEAR = "Fear"
+        for emo in emotion:
+            analyze[str(emo["label"])] = float(emo["confidence"])
+        current = max(analyze, key=analyze.get)
 
-@dataclass
-class EmotionResult:
-    """Data class for emotion detection results"""
-    emotion: EmotionType
-    confidence: float
-    all_emotions: Dict[str, float]
-    color_code: int
+	# Color code emotions
+        emotion_color_dict = {'Neutral':11 , 'Sad':31 , 'Disgust':51 , 'Fear':61 , 'Surprise':41, 'Happy':21, 'Angry':1}
+        emot_list.append(emotion_color_dict[current])
+        print(emot_list)
 
-def _get_emotion_color_mapping() -> Dict[str, int]:
-    """
-    Get the color code mapping for emotions.
+    return current
 
-    Returns:
-        Dictionary mapping emotion names to color codes
-    """
-    return {
-        'Neutral': 11,
-        'Sad': 31,
-        'Disgust': 51,
-        'Fear': 61,
-        'Surprise': 41,
-        'Happy': 21,
-        'Angry': 1
-    }
+def get_playlist():
+    current = get_emotion()
+    #get playlist from emotion
 
-def _call_emotion_api(image_path: str = "snapshots/pic.png") -> Dict:
-    """
-    Make API call to emotion recognition service.
-
-    Args:
-        image_path: Path to the image file
-
-    Returns:
-        API response dictionary
-
-    Raises:
-        FileNotFoundError: If image file doesn't exist
-        RuntimeError: If API call fails
-    """
-    try:
-        with open(image_path, "rb") as img_file:
-            input_data = bytearray(img_file.read())
-
-        client = Algorithmia.client('api-key')
-        algo = client.algo('deeplearning/EmotionRecognitionCNNMBP/1.0.1')
-        result = algo.pipe(input_data).result
-
-        return result
-    except FileNotFoundError as e:
-        logger.error(f"Image file not found: {image_path}")
-        raise
-    except Exception as e:
-        logger.error(f"API call failed: {str(e)}")
-        raise RuntimeError(f"Emotion recognition API failed: {str(e)}")
-
-def _parse_emotion_results(api_response: Dict) -> EmotionResult:
-    """
-    Parse API response and extract emotion information.
-
-    Args:
-        api_response: Raw API response
-
-    Returns:
-        EmotionResult object with parsed data
-    """
-    results = api_response.get("results", [])
-
-    # Handle no detection case
-    if not results:
-        logger.info("No emotions detected, defaulting to Neutral")
-        color_mapping = _get_emotion_color_mapping()
-        return EmotionResult(
-            emotion=EmotionType.NEUTRAL,
-            confidence=1.0,
-            all_emotions={"Neutral": 1.0},
-            color_code=color_mapping['Neutral']
-        )
-
-    # Extract emotion confidences
-    emotions_data = results[0].get("emotions", [])
-    emotion_scores = {}
-
-    for emotion_item in emotions_data:
-        label = str(emotion_item["label"])
-        confidence = float(emotion_item["confidence"])
-        emotion_scores[label] = confidence
-
-    # Find dominant emotion
-    if not emotion_scores:
-        dominant_emotion = "Neutral"
-        confidence_score = 1.0
+    with open("test.txt", "rb") as fp:
+        songnames = pickle.load(fp, encoding='latin1')
+    songlist = {1: [1,170], 2:[171,334], 3:[335,549], 4:[550, 740], 5:[741,903]}
+    if ((current == "Anger") | (current == "Fear")):
+        cluster_def = [[5, 2], [3, 7], [2, 12]]
+    elif(current == "Sad"):
+        cluster_def = [[3, 4], [4, 4], [2, 13]]
+    elif((current == "Neutral") | (current == "Disgust") | (current == "Surprise")):
+        cluster_def = [[3, 2], [4, 5], [2, 7], [1, 5]]
     else:
         dominant_emotion = max(emotion_scores.items(), key=lambda x: x[1])[0]
         confidence_score = emotion_scores[dominant_emotion]
